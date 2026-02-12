@@ -97,10 +97,142 @@ your team?
 }
 ```
 
+## MCP Server – `extract_customer_questions`
+
+An MCP (Model Context Protocol) server that exposes a tool to extract customer questions from call transcripts, with **sentiment** and **urgency** classification.
+
+### Tools Provided
+
+| Tool | Description |
+|------|-------------|
+| `extract_customer_questions` | Accepts raw transcript text, returns structured questions with classification |
+| `extract_customer_questions_from_file` | Accepts a file path, reads the transcript, and returns structured questions |
+
+### Sample Tool Output
+
+```json
+{
+  "total_questions": 13,
+  "urgency_breakdown": { "high": 2, "medium": 5, "low": 6 },
+  "sentiment_breakdown": { "positive": 1, "neutral": 9, "negative": 3 },
+  "questions": [
+    {
+      "timestamp": "01:10",
+      "speaker": "Priya White (Data Engineer)",
+      "question": "Can someone walk us through the biggest challenges you're facing today?",
+      "urgency": "medium",
+      "sentiment": "neutral"
+    },
+    {
+      "timestamp": "03:01",
+      "speaker": "Michael Jones (Customer Success Manager)",
+      "question": "How long has this been a problem?",
+      "urgency": "low",
+      "sentiment": "negative"
+    }
+  ]
+}
+```
+
+### Run the MCP Server Locally
+
+```bash
+cd mcp_server
+pip install -r requirements.txt
+python server.py
+```
+
+The server starts on `http://127.0.0.1:8000` with an SSE endpoint at `/sse`.
+
+---
+
+## Copilot Studio Integration
+
+Follow these steps to connect the MCP server to Microsoft Copilot Studio as an action.
+
+### Prerequisites
+
+- The MCP server must be accessible over HTTPS from the internet (e.g., deployed to Azure App Service, Azure Container Apps, or tunneled via `devtunnel` / `ngrok` for testing)
+- A Copilot Studio environment with agent authoring access
+
+### Step 1 – Deploy the MCP Server
+
+**Option A: Azure App Service (Production)**
+
+1. Create an Azure App Service (Python 3.10+ Linux)
+2. Deploy the `mcp_server/` folder
+3. Set the startup command: `python server.py`
+4. Note the public URL: `https://<your-app>.azurewebsites.net`
+
+**Option B: Dev Tunnel (Local Testing)**
+
+```bash
+# Start the MCP server
+cd mcp_server && python server.py
+
+# In another terminal, create a tunnel
+devtunnel host -p 8000 --allow-anonymous
+```
+
+Note the tunnel URL (e.g., `https://abc123.devtunnels.ms`)
+
+### Step 2 – Add the MCP Action in Copilot Studio
+
+1. Open [Copilot Studio](https://copilotstudio.microsoft.com)
+2. Navigate to your agent → **Actions** in the left sidebar
+3. Click **+ Add an action**
+4. Select **MCP Server (preview)** as the action type
+5. Enter the SSE endpoint URL:
+   ```
+   https://<your-server>/sse
+   ```
+6. Copilot Studio will auto-discover the available tools (`extract_customer_questions`, `extract_customer_questions_from_file`)
+7. Click **Next** → review the tool schemas → **Add**
+
+### Step 3 – Configure the Action in a Topic
+
+1. Go to **Topics** → create or edit a topic (e.g., "Analyze Customer Call")
+2. Add a **Question** node to collect the transcript from the user (or connect an input variable)
+3. Add an **Action** node → select the `extract_customer_questions` action
+4. Map the `transcript` input parameter to the user's message or variable
+5. Add a **Message** node to display the results back to the user
+6. Use **Power Fx** or **Adaptive Cards** to format the JSON response:
+
+   ```
+   Topic.extract_customer_questions.response
+   ```
+
+### Step 4 – Test
+
+1. Click **Test** in the top-right corner of Copilot Studio
+2. Paste a sample transcript from `fake_customer_calls.txt`
+3. The agent should return the extracted questions with urgency and sentiment tags
+
+### Architecture Diagram
+
+```
+┌──────────────┐      ┌──────────────────┐      ┌──────────────────┐
+│  Copilot      │ SSE  │   MCP Server     │      │   Transcript     │
+│  Studio Agent │─────▶│  (Python/FastMCP)│◀─────│   Data           │
+│              │◀─────│   :8000/sse      │      │                  │
+└──────────────┘ JSON  └──────────────────┘      └──────────────────┘
+```
+
+### Troubleshooting
+
+| Issue | Solution |
+|-------|----------|
+| "Could not connect to MCP server" | Ensure the server is running and the `/sse` endpoint is accessible over HTTPS |
+| No tools discovered | Verify the server starts without errors; check `python server.py` logs |
+| Timeout errors | Increase the Copilot Studio action timeout; large transcripts may need more processing time |
+| Authentication errors | If using Azure App Service with auth, configure an API key or disable Easy Auth for testing |
+
+---
+
 ## Requirements
 
-- Python 3.6+
-- No external dependencies (stdlib only)
+- Python 3.10+
+- `mcp[cli]` (for MCP server)
 
 ## License
 
