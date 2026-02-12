@@ -1,0 +1,3320 @@
+================================================================================
+CALL #001 - Pioneer Tech (Healthcare)
+Date: 2026-02-11
+Duration: ~10 minutes
+Participants: 5
+Call Type: Problem Discovery
+================================================================================
+
+[00:00] Priya White (Data Engineer):
+Good morning everyone, thanks for joining today's call. I'm Priya White and I'll be facilitating our discussion on the Foundry IQ implementation for Pioneer Tech.
+
+[00:10] Priya White (Data Engineer):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:16] Michael Jones (Customer Success Manager):
+Hey team, I'm Michael Jones, serving as Customer Success Manager. Looking forward to a productive session.
+
+[00:24] Wei Jones (Solution Engineer):
+Hi everyone, Wei Jones here. I'm the Solution Engineer on this engagement. Excited to be part of this.
+
+[00:30] Amanda Nakamura (Product Manager):
+Hey team, I'm Amanda Nakamura, serving as Product Manager. Looking forward to a productive session.
+
+[00:38] Daniel Thompson (Solution Architect):
+Hi everyone, Daniel Thompson here. I'm the Solution Architect on this engagement. Excited to be part of this.
+
+[00:45] Priya White (Data Engineer):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:53] Michael Jones (Customer Success Manager):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[01:03] Priya White (Data Engineer):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:10] Priya White (Data Engineer):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:25] Amanda Nakamura (Product Manager):
+Our population health models are running on stale data - sometimes 48 hours old. By the time we identify at-risk patients, interventions are already too late.
+
+[01:46] Daniel Thompson (Solution Architect):
+Walk me through a specific example. What does that look like day-to-day for your team?
+
+[02:01] Amanda Nakamura (Product Manager):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[02:20] Daniel Thompson (Solution Architect):
+I've seen Foundry IQ address exactly this kind of challenge at other organizations. The key is getting the data integration right from the start.
+
+[02:35] Michael Jones (Customer Success Manager):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:44] Daniel Thompson (Solution Architect):
+We failed our last HIPAA audit because we couldn't demonstrate proper data lineage. We need to know exactly where patient data flows and who accessed it.
+
+[03:01] Michael Jones (Customer Success Manager):
+How long has this been a problem? And what have you tried so far to address it?
+
+[03:19] Wei Jones (Solution Engineer):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[03:41] Michael Jones (Customer Success Manager):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[03:57] Wei Jones (Solution Engineer):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[04:11] Daniel Thompson (Solution Architect):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[04:27] Michael Jones (Customer Success Manager):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[04:45] Wei Jones (Solution Engineer):
+On the data privacy front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[05:07] Priya White (Data Engineer):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[05:23] Amanda Nakamura (Product Manager):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[05:37] Amanda Nakamura (Product Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[05:51] Daniel Thompson (Solution Architect):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[06:13] Michael Jones (Customer Success Manager):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[06:31] Priya White (Data Engineer):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[06:45] Wei Jones (Solution Engineer):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[07:07] Michael Jones (Customer Success Manager):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[07:24] Priya White (Data Engineer):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[07:38] Amanda Nakamura (Product Manager):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[07:55] Wei Jones (Solution Engineer):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[08:14] Daniel Thompson (Solution Architect):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[08:32] Amanda Nakamura (Product Manager):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[08:48] Wei Jones (Solution Engineer):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[09:07] Priya White (Data Engineer):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[09:17] Amanda Nakamura (Product Manager):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[09:28] Wei Jones (Solution Engineer):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[09:40] Daniel Thompson (Solution Architect):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[09:54] Michael Jones (Customer Success Manager):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[10:04] Priya White (Data Engineer):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[10:16] Wei Jones (Solution Engineer):
+Just want to say this was a great discussion. I feel much more confident about the Foundry IQ approach now.
+
+[10:24] Priya White (Data Engineer):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #002 - Catalyst Corp (Financial Services)
+Date: 2026-02-11
+Duration: ~9 minutes
+Participants: 5
+Call Type: Requirements Gathering
+================================================================================
+
+[00:00] Brian Anderson (Solution Architect):
+Good morning everyone, thanks for joining today's call. I'm Brian Anderson and I'll be facilitating our discussion on the Foundry IQ implementation for Catalyst Corp.
+
+[00:11] Brian Anderson (Solution Architect):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:20] Michelle Miller (Product Manager):
+Hey team, I'm Michelle Miller, serving as Product Manager. Looking forward to a productive session.
+
+[00:26] Wei Martinez (Data Engineer):
+Hi everyone, Wei Martinez here. I'm the Data Engineer on this engagement. Excited to be part of this.
+
+[00:31] Robert Martinez (Technical Lead):
+Hey team, I'm Robert Martinez, serving as Technical Lead. Looking forward to a productive session.
+
+[00:39] Jennifer Thompson (Solution Engineer):
+Hi everyone, Jennifer Thompson here. I'm the Solution Engineer on this engagement. Excited to be part of this.
+
+[00:45] Brian Anderson (Solution Architect):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:56] Robert Martinez (Technical Lead):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[01:06] Brian Anderson (Solution Architect):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:13] Brian Anderson (Solution Architect):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:23] Wei Martinez (Data Engineer):
+Our fraud detection system has a 15% false positive rate which is costing us millions in manual review hours. We need to reduce that without increasing false negatives.
+
+[01:43] Michelle Miller (Product Manager):
+How long has this been a problem? And what have you tried so far to address it?
+
+[02:01] Wei Martinez (Data Engineer):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[02:16] Brian Anderson (Solution Architect):
+This is actually a great use case for Foundry IQ's ontology layer. By unifying the data model, we can eliminate a lot of those manual reconciliation steps.
+
+[02:28] Robert Martinez (Technical Lead):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:38] Michelle Miller (Product Manager):
+Our risk models run in batch overnight but the market moves in real time. We need intraday risk recalculation to stay competitive.
+
+[02:56] Robert Martinez (Technical Lead):
+Can you quantify the business impact of that? Like, what does that translate to in terms of revenue or operational cost?
+
+[03:08] Michelle Miller (Product Manager):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[03:24] Brian Anderson (Solution Architect):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[03:36] Brian Anderson (Solution Architect):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[03:49] Brian Anderson (Solution Architect):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[03:57] Jennifer Thompson (Solution Engineer):
+The system must generate regulatory reports in formats compliant with Basel III, MiFID II, and Dodd-Frank requirements.
+
+[04:17] Michelle Miller (Product Manager):
+I agree that's critical. We'll want to build automated tests around that requirement so we can validate it continuously as the platform evolves.
+
+[04:33] Michelle Miller (Product Manager):
+The system must support real-time transaction scoring with the ability to process at least 10,000 transactions per second.
+
+[04:52] Michelle Miller (Product Manager):
+Good. Let me make sure I understand the acceptance criteria there. Are we talking about a binary pass/fail or are there graduated levels of compliance?
+
+[05:10] Jennifer Thompson (Solution Engineer):
+All ML model outputs must include feature importance scores and decision explanations in human-readable format for regulatory review.
+
+[05:31] Wei Martinez (Data Engineer):
+Good. Let me make sure I understand the acceptance criteria there. Are we talking about a binary pass/fail or are there graduated levels of compliance?
+
+[05:44] Robert Martinez (Technical Lead):
+We need full audit logging of every data access, transformation, and model execution with tamper-proof storage.
+
+[06:05] Jennifer Thompson (Solution Engineer):
+Good. Let me make sure I understand the acceptance criteria there. Are we talking about a binary pass/fail or are there graduated levels of compliance?
+
+[06:17] Brian Anderson (Solution Architect):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:31] Jennifer Thompson (Solution Engineer):
+All data must be retained for a minimum of 7 years in compliance with SEC and FINRA regulations.
+
+[06:48] Robert Martinez (Technical Lead):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[07:00] Robert Martinez (Technical Lead):
+Transaction scoring must complete within 50 milliseconds at the 99th percentile.
+
+[07:21] Wei Martinez (Data Engineer):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[07:33] Jennifer Thompson (Solution Engineer):
+The system must support concurrent access by at least 500 analysts without performance degradation.
+
+[07:55] Brian Anderson (Solution Architect):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[08:10] Wei Martinez (Data Engineer):
+System failover must complete within 30 seconds with zero data loss for in-flight transactions.
+
+[08:26] Brian Anderson (Solution Architect):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[08:43] Brian Anderson (Solution Architect):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[08:53] Michelle Miller (Product Manager):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[09:05] Jennifer Thompson (Solution Engineer):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[09:19] Wei Martinez (Data Engineer):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[09:34] Brian Anderson (Solution Architect):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[09:43] Wei Martinez (Data Engineer):
+Just want to say this was a great discussion. I feel much more confident about the Foundry IQ approach now.
+
+[09:50] Brian Anderson (Solution Architect):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #003 - Cobalt Technologies (Retail)
+Date: 2026-02-11
+Duration: ~13 minutes
+Participants: 3
+Call Type: Architecture Review
+================================================================================
+
+[00:00] Jessica Brown (Technical Lead):
+Good morning everyone, thanks for joining today's call. I'm Jessica Brown and I'll be facilitating our discussion on the Foundry IQ implementation for Cobalt Technologies.
+
+[00:10] Jessica Brown (Technical Lead):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:17] Jennifer Martinez (Product Manager):
+Good morning. Jennifer Martinez, Product Manager. I've been working closely with the Cobalt Technologies team on the pre-work for this.
+
+[00:23] Jessica Anderson (Solution Architect):
+Hi, Jessica Anderson here, Solution Architect. Happy to dive into the details today.
+
+[00:30] Jessica Brown (Technical Lead):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:40] Jessica Anderson (Solution Architect):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:50] Jessica Brown (Technical Lead):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[00:56] Jessica Brown (Technical Lead):
+Let's talk about the architecture for pricing optimization. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[01:11] Jennifer Martinez (Product Manager):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[01:27] Jessica Anderson (Solution Architect):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[01:40] Jessica Brown (Technical Lead):
+On the supply chain visibility front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[02:00] Jessica Anderson (Solution Architect):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[02:17] Jessica Brown (Technical Lead):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[02:32] Jessica Anderson (Solution Architect):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[02:49] Jessica Anderson (Solution Architect):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[03:08] Jessica Anderson (Solution Architect):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[03:22] Jessica Brown (Technical Lead):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[03:43] Jessica Anderson (Solution Architect):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[03:57] Jennifer Martinez (Product Manager):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[04:11] Jessica Anderson (Solution Architect):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[04:32] Jessica Brown (Technical Lead):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[04:52] Jennifer Martinez (Product Manager):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[05:12] Jessica Anderson (Solution Architect):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[05:25] Jessica Anderson (Solution Architect):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[05:44] Jessica Brown (Technical Lead):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[06:04] Jessica Anderson (Solution Architect):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[06:24] Jessica Anderson (Solution Architect):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[06:42] Jessica Brown (Technical Lead):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[06:54] Jessica Brown (Technical Lead):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[07:03] Jennifer Martinez (Product Manager):
+The platform must support customer identity resolution across online, mobile app, in-store, and loyalty program touchpoints.
+
+[07:25] Jessica Brown (Technical Lead):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[07:38] Jessica Anderson (Solution Architect):
+We need a unified product catalog that reconciles SKUs across all channels with support for product hierarchy and attribute management.
+
+[07:58] Jennifer Martinez (Product Manager):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[08:16] Jessica Anderson (Solution Architect):
+The system must generate automated replenishment recommendations based on real-time inventory levels, lead times, and forecasted demand.
+
+[08:31] Jessica Brown (Technical Lead):
+I agree that's critical. We'll want to build automated tests around that requirement so we can validate it continuously as the platform evolves.
+
+[08:47] Jennifer Martinez (Product Manager):
+Users must be able to create and test pricing rules with A/B testing capabilities including geographic and demographic segmentation.
+
+[09:04] Jessica Anderson (Solution Architect):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[09:21] Jessica Anderson (Solution Architect):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[09:35] Jessica Anderson (Solution Architect):
+Platform must support a Black Friday traffic spike of 20x normal volume without service degradation.
+
+[09:56] Jennifer Martinez (Product Manager):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[10:11] Jennifer Martinez (Product Manager):
+The system must maintain data freshness of 15 minutes or less for inventory positions across all stores.
+
+[10:33] Jessica Brown (Technical Lead):
+I want to make sure we're being realistic there. Let me check with the infrastructure team on what's achievable with the current resource allocation.
+
+[10:45] Jennifer Martinez (Product Manager):
+The demand forecasting engine must process predictions for 500,000 SKUs across all locations within a 2-hour batch window.
+
+[11:00] Jessica Anderson (Solution Architect):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[11:16] Jessica Anderson (Solution Architect):
+The customer data platform must handle 50 million unique customer profiles with sub-second lookup times.
+
+[11:37] Jennifer Martinez (Product Manager):
+That's a rigorous target. We'll need to validate that during the load testing phase. I'd suggest we build performance benchmarks into the acceptance criteria.
+
+[11:54] Jessica Brown (Technical Lead):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[12:02] Jennifer Martinez (Product Manager):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[12:12] Jessica Brown (Technical Lead):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[12:23] Jessica Anderson (Solution Architect):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[12:34] Jennifer Martinez (Product Manager):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[12:45] Jessica Brown (Technical Lead):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[12:56] Jessica Anderson (Solution Architect):
+All good here. Let's keep the momentum going. Excited to see this come together.
+
+[13:05] Jessica Brown (Technical Lead):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #004 - Fusion Analytics (Manufacturing)
+Date: 2026-02-11
+Duration: ~15 minutes
+Participants: 4
+Call Type: Mixed
+================================================================================
+
+[00:00] Michael Anderson (Product Manager):
+Good morning everyone, thanks for joining today's call. I'm Michael Anderson and I'll be facilitating our discussion on the Foundry IQ implementation for Fusion Analytics.
+
+[00:09] Michael Anderson (Product Manager):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:18] Aisha Clark (Solution Engineer):
+Hi everyone, Aisha Clark here. I'm the Solution Engineer on this engagement. Excited to be part of this.
+
+[00:24] Sarah Lee (Solution Architect):
+Good morning. Sarah Lee, Solution Architect. I've been working closely with the Fusion Analytics team on the pre-work for this.
+
+[00:30] Wei Lee (Technical Lead):
+Good morning. Wei Lee, Technical Lead. I've been working closely with the Fusion Analytics team on the pre-work for this.
+
+[00:36] Michael Anderson (Product Manager):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:45] Wei Lee (Technical Lead):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:53] Michael Anderson (Product Manager):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:01] Michael Anderson (Product Manager):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:16] Sarah Lee (Solution Architect):
+Our quality defect rate has climbed to 3.2% and we can't trace root causes because production data and quality data live in completely separate systems.
+
+[01:33] Sarah Lee (Solution Architect):
+Can you quantify the business impact of that? Like, what does that translate to in terms of revenue or operational cost?
+
+[01:49] Aisha Clark (Solution Engineer):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[02:08] Sarah Lee (Solution Architect):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[02:20] Michael Anderson (Product Manager):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:31] Aisha Clark (Solution Engineer):
+Unplanned equipment downtime is costing us $500K per incident. We have sensors on everything but no way to correlate the data into predictive insights.
+
+[02:48] Michael Anderson (Product Manager):
+And that's with your current tooling? What are you using today for that workflow?
+
+[03:06] Sarah Lee (Solution Architect):
+We're using a mix of custom scripts, some legacy ETL tools, and honestly a lot of Excel. It's not sustainable and everyone knows it.
+
+[03:26] Aisha Clark (Solution Engineer):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[03:40] Michael Anderson (Product Manager):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[03:53] Michael Anderson (Product Manager):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[04:01] Aisha Clark (Solution Engineer):
+The platform must support digital twin modeling for at least 200 pieces of critical equipment with real-time state synchronization.
+
+[04:19] Wei Lee (Technical Lead):
+Noted. I'll map that to the specific Foundry IQ modules we'll need to configure. That touches the ontology layer and possibly the Workshop application.
+
+[04:34] Aisha Clark (Solution Engineer):
+The system must ingest and process streaming data from 50,000 IoT sensors with support for OPC UA, MQTT, and Modbus protocols.
+
+[04:51] Wei Lee (Technical Lead):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[05:03] Wei Lee (Technical Lead):
+Users must be able to define custom anomaly detection rules combining sensor thresholds, temporal patterns, and equipment context.
+
+[05:23] Aisha Clark (Solution Engineer):
+Good. Let me make sure I understand the acceptance criteria there. Are we talking about a binary pass/fail or are there graduated levels of compliance?
+
+[05:38] Sarah Lee (Solution Architect):
+The platform must support integration with MES, ERP, and SCADA systems through configurable connectors.
+
+[05:53] Wei Lee (Technical Lead):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[06:07] Sarah Lee (Solution Architect):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:19] Wei Lee (Technical Lead):
+The system must retain raw sensor data for 90 days in hot storage and 5 years in cold storage with seamless query across tiers.
+
+[06:39] Michael Anderson (Product Manager):
+I want to make sure we're being realistic there. Let me check with the infrastructure team on what's achievable with the current resource allocation.
+
+[06:57] Aisha Clark (Solution Engineer):
+The platform must achieve 99.99% uptime for the real-time monitoring subsystem.
+
+[07:19] Sarah Lee (Solution Architect):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[07:35] Wei Lee (Technical Lead):
+Anomaly detection alerts must fire within 5 seconds of the triggering sensor reading.
+
+[07:54] Aisha Clark (Solution Engineer):
+That's a rigorous target. We'll need to validate that during the load testing phase. I'd suggest we build performance benchmarks into the acceptance criteria.
+
+[08:10] Sarah Lee (Solution Architect):
+The platform must operate in air-gapped environments with no internet connectivity for classified production facilities.
+
+[08:29] Michael Anderson (Product Manager):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[08:45] Michael Anderson (Product Manager):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[09:01] Wei Lee (Technical Lead):
+On the supply chain optimization front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[09:23] Michael Anderson (Product Manager):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[09:40] Wei Lee (Technical Lead):
+For the equipment monitoring workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[09:54] Michael Anderson (Product Manager):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[10:09] Sarah Lee (Solution Architect):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[10:26] Aisha Clark (Solution Engineer):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[10:46] Wei Lee (Technical Lead):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[11:02] Michael Anderson (Product Manager):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[11:23] Aisha Clark (Solution Engineer):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[11:43] Michael Anderson (Product Manager):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[11:55] Wei Lee (Technical Lead):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[12:15] Michael Anderson (Product Manager):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[12:30] Michael Anderson (Product Manager):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[12:48] Aisha Clark (Solution Engineer):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[13:07] Sarah Lee (Solution Architect):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[13:23] Wei Lee (Technical Lead):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[13:43] Aisha Clark (Solution Engineer):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[14:05] Aisha Clark (Solution Engineer):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[14:17] Michael Anderson (Product Manager):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[14:29] Aisha Clark (Solution Engineer):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[14:39] Aisha Clark (Solution Engineer):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[14:50] Sarah Lee (Solution Architect):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[15:05] Michael Anderson (Product Manager):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[15:17] Aisha Clark (Solution Engineer):
+Just want to say this was a great discussion. I feel much more confident about the Foundry IQ approach now.
+
+[15:23] Michael Anderson (Product Manager):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #005 - Vertex Group (Technology)
+Date: 2026-02-11
+Duration: ~9 minutes
+Participants: 5
+Call Type: Problem Discovery
+================================================================================
+
+[00:00] Daniel Miller (Technical Lead):
+Good morning everyone, thanks for joining today's call. I'm Daniel Miller and I'll be facilitating our discussion on the Foundry IQ implementation for Vertex Group.
+
+[00:10] Daniel Miller (Technical Lead):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:16] Carlos Anderson (Solution Engineer):
+Good morning. Carlos Anderson, Solution Engineer. I've been working closely with the Vertex Group team on the pre-work for this.
+
+[00:23] David Anderson (Solution Architect):
+Hi, David Anderson here, Solution Architect. Happy to dive into the details today.
+
+[00:28] Jennifer Nakamura (Product Manager):
+Hi everyone, Jennifer Nakamura here. I'm the Product Manager on this engagement. Excited to be part of this.
+
+[00:34] Kevin Williams (Customer Success Manager):
+Hi, Kevin Williams here, Customer Success Manager. Happy to dive into the details today.
+
+[00:40] Daniel Miller (Technical Lead):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:50] David Anderson (Solution Architect):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:59] Daniel Miller (Technical Lead):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:05] Daniel Miller (Technical Lead):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:16] David Anderson (Solution Architect):
+We've got 15 different microservices each with their own data store and there's no way to answer cross-service business questions without a week-long data engineering project.
+
+[01:31] Jennifer Nakamura (Product Manager):
+And that's with your current tooling? What are you using today for that workflow?
+
+[01:46] Carlos Anderson (Solution Engineer):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[02:04] Kevin Williams (Customer Success Manager):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[02:17] Carlos Anderson (Solution Engineer):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:28] Carlos Anderson (Solution Engineer):
+Developer onboarding for our data platform takes 3 weeks. The tooling is so complex that engineers spend more time fighting infrastructure than writing analytics logic.
+
+[02:49] Carlos Anderson (Solution Engineer):
+Can you quantify the business impact of that? Like, what does that translate to in terms of revenue or operational cost?
+
+[03:02] Jennifer Nakamura (Product Manager):
+It's been building for about 18 months. We did a POC with another vendor last year but it didn't scale past the pilot phase. That's why we're looking at Foundry IQ now.
+
+[03:21] Carlos Anderson (Solution Engineer):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[03:36] Carlos Anderson (Solution Engineer):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[03:55] David Anderson (Solution Architect):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[04:12] Kevin Williams (Customer Success Manager):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[04:27] Carlos Anderson (Solution Engineer):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[04:49] Daniel Miller (Technical Lead):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[05:05] Jennifer Nakamura (Product Manager):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[05:20] Kevin Williams (Customer Success Manager):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[05:36] Jennifer Nakamura (Product Manager):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[05:58] Daniel Miller (Technical Lead):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[06:14] Carlos Anderson (Solution Engineer):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[06:32] Daniel Miller (Technical Lead):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[06:50] Daniel Miller (Technical Lead):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[07:11] Carlos Anderson (Solution Engineer):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[07:26] Kevin Williams (Customer Success Manager):
+Let's talk about the architecture for feature experimentation. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[07:40] David Anderson (Solution Architect):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[07:58] Kevin Williams (Customer Success Manager):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[08:20] Kevin Williams (Customer Success Manager):
+For the feature experimentation workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[08:38] Daniel Miller (Technical Lead):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[08:46] Daniel Miller (Technical Lead):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[08:59] Kevin Williams (Customer Success Manager):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[09:14] David Anderson (Solution Architect):
+Let's schedule a follow-up session specifically focused on the security and compliance architecture.
+
+[09:24] Carlos Anderson (Solution Engineer):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[09:34] Daniel Miller (Technical Lead):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[09:42] Jennifer Nakamura (Product Manager):
+Nothing from my side. Appreciate everyone's time. Looking forward to the next steps.
+
+[09:48] Daniel Miller (Technical Lead):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #006 - Pioneer Tech (Healthcare)
+Date: 2026-02-11
+Duration: ~10 minutes
+Participants: 4
+Call Type: Requirements Gathering
+================================================================================
+
+[00:00] Kevin Patel (Solution Architect):
+Good morning everyone, thanks for joining today's call. I'm Kevin Patel and I'll be facilitating our discussion on the Foundry IQ implementation for Pioneer Tech.
+
+[00:08] Kevin Patel (Solution Architect):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:14] Lisa Martinez (Solution Engineer):
+Hi, Lisa Martinez here, Solution Engineer. Happy to dive into the details today.
+
+[00:21] Daniel Okonkwo (Customer Success Manager):
+Good morning. Daniel Okonkwo, Customer Success Manager. I've been working closely with the Pioneer Tech team on the pre-work for this.
+
+[00:28] Daniel Okonkwo (Product Manager):
+Hi, Daniel Okonkwo here, Product Manager. Happy to dive into the details today.
+
+[00:36] Kevin Patel (Solution Architect):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:45] Lisa Martinez (Solution Engineer):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:55] Kevin Patel (Solution Architect):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:01] Kevin Patel (Solution Architect):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:11] Daniel Okonkwo (Customer Success Manager):
+Our population health models are running on stale data - sometimes 48 hours old. By the time we identify at-risk patients, interventions are already too late.
+
+[01:28] Daniel Okonkwo (Customer Success Manager):
+Is that affecting all teams equally or are certain groups hit harder than others?
+
+[01:45] Kevin Patel (Solution Architect):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[02:04] Daniel Okonkwo (Product Manager):
+I've seen Foundry IQ address exactly this kind of challenge at other organizations. The key is getting the data integration right from the start.
+
+[02:18] Kevin Patel (Solution Architect):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:26] Daniel Okonkwo (Customer Success Manager):
+We have data siloed across five different EHR systems and there's no unified view of patient journeys. Clinicians are making decisions with incomplete information.
+
+[02:42] Daniel Okonkwo (Product Manager):
+How long has this been a problem? And what have you tried so far to address it?
+
+[02:54] Kevin Patel (Solution Architect):
+The operations team is definitely hit the hardest. They're the ones dealing with the manual workarounds every single day. But it cascades - leadership can't get accurate reports either.
+
+[03:14] Lisa Martinez (Solution Engineer):
+I've seen Foundry IQ address exactly this kind of challenge at other organizations. The key is getting the data integration right from the start.
+
+[03:27] Kevin Patel (Solution Architect):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[03:42] Kevin Patel (Solution Architect):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[03:50] Daniel Okonkwo (Customer Success Manager):
+The platform must support automated patient cohort generation based on configurable clinical criteria including ICD-10 codes, lab results, and medication history.
+
+[04:05] Lisa Martinez (Solution Engineer):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[04:19] Lisa Martinez (Solution Engineer):
+We need the ability to run federated queries across all five EHR data sources as if they were a single dataset.
+
+[04:37] Lisa Martinez (Solution Engineer):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[04:49] Daniel Okonkwo (Customer Success Manager):
+All data transformations must produce an auditable lineage trail showing source-to-destination data flow.
+
+[05:11] Daniel Okonkwo (Product Manager):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[05:28] Lisa Martinez (Solution Engineer):
+The system must support real-time ingestion from HL7 FHIR endpoints with sub-second latency for critical patient events.
+
+[05:50] Daniel Okonkwo (Customer Success Manager):
+Good. Let me make sure I understand the acceptance criteria there. Are we talking about a binary pass/fail or are there graduated levels of compliance?
+
+[06:06] Daniel Okonkwo (Product Manager):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:19] Daniel Okonkwo (Product Manager):
+The system must maintain 99.95% uptime with zero planned downtime during business hours.
+
+[06:37] Lisa Martinez (Solution Engineer):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[06:55] Lisa Martinez (Solution Engineer):
+Disaster recovery must support an RPO of 1 hour and an RTO of 4 hours.
+
+[07:11] Daniel Okonkwo (Product Manager):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[07:24] Daniel Okonkwo (Customer Success Manager):
+The platform must support role-based access control with at least 15 distinct permission levels aligned to clinical roles.
+
+[07:44] Lisa Martinez (Solution Engineer):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[08:01] Lisa Martinez (Solution Engineer):
+System must be able to scale horizontally to handle a 10x increase in data volume over the next 3 years without architectural changes.
+
+[08:23] Daniel Okonkwo (Product Manager):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[08:38] Kevin Patel (Solution Architect):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[08:48] Lisa Martinez (Solution Engineer):
+Let's schedule a follow-up session specifically focused on the security and compliance architecture.
+
+[08:59] Kevin Patel (Solution Architect):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[09:14] Daniel Okonkwo (Customer Success Manager):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[09:24] Daniel Okonkwo (Customer Success Manager):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[09:36] Kevin Patel (Solution Architect):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[09:46] Lisa Martinez (Solution Engineer):
+Just want to say this was a great discussion. I feel much more confident about the Foundry IQ approach now.
+
+[09:55] Kevin Patel (Solution Architect):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #007 - Pinnacle Retail (Financial Services)
+Date: 2026-02-11
+Duration: ~12 minutes
+Participants: 5
+Call Type: Architecture Review
+================================================================================
+
+[00:00] Emily Martin (Data Engineer):
+Good morning everyone, thanks for joining today's call. I'm Emily Martin and I'll be facilitating our discussion on the Foundry IQ implementation for Pinnacle Retail.
+
+[00:08] Emily Martin (Data Engineer):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:18] Kevin Taylor (Technical Lead):
+Hi everyone, Kevin Taylor here. I'm the Technical Lead on this engagement. Excited to be part of this.
+
+[00:23] Jennifer Jones (Solution Engineer):
+Good morning. Jennifer Jones, Solution Engineer. I've been working closely with the Pinnacle Retail team on the pre-work for this.
+
+[00:29] Robert Rodriguez (Customer Success Manager):
+Hi, Robert Rodriguez here, Customer Success Manager. Happy to dive into the details today.
+
+[00:36] James Lee (Product Manager):
+Hi, James Lee here, Product Manager. Happy to dive into the details today.
+
+[00:43] Emily Martin (Data Engineer):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:51] Jennifer Jones (Solution Engineer):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[01:01] Emily Martin (Data Engineer):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:07] Kevin Taylor (Technical Lead):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[01:24] Robert Rodriguez (Customer Success Manager):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[01:42] Robert Rodriguez (Customer Success Manager):
+Let's talk about the architecture for portfolio optimization. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[02:03] Jennifer Jones (Solution Engineer):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[02:17] Robert Rodriguez (Customer Success Manager):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[02:31] Jennifer Jones (Solution Engineer):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[02:53] Kevin Taylor (Technical Lead):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[03:12] James Lee (Product Manager):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[03:27] Emily Martin (Data Engineer):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[03:42] Jennifer Jones (Solution Engineer):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[04:01] Kevin Taylor (Technical Lead):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[04:15] Jennifer Jones (Solution Engineer):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[04:33] James Lee (Product Manager):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[04:48] Kevin Taylor (Technical Lead):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[05:06] Jennifer Jones (Solution Engineer):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[05:20] James Lee (Product Manager):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[05:34] Robert Rodriguez (Customer Success Manager):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[05:51] Robert Rodriguez (Customer Success Manager):
+On the SOC 2 compliance front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[06:05] Jennifer Jones (Solution Engineer):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[06:19] Emily Martin (Data Engineer):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[06:35] Emily Martin (Data Engineer):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[06:47] Jennifer Jones (Solution Engineer):
+We need full audit logging of every data access, transformation, and model execution with tamper-proof storage.
+
+[07:08] James Lee (Product Manager):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[07:21] Robert Rodriguez (Customer Success Manager):
+The system must support real-time transaction scoring with the ability to process at least 10,000 transactions per second.
+
+[07:36] Kevin Taylor (Technical Lead):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[07:52] Robert Rodriguez (Customer Success Manager):
+The platform must support multi-entity resolution across accounts, customers, and counterparties with configurable matching rules.
+
+[08:14] Jennifer Jones (Solution Engineer):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[08:26] James Lee (Product Manager):
+All ML model outputs must include feature importance scores and decision explanations in human-readable format for regulatory review.
+
+[08:44] Emily Martin (Data Engineer):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[08:57] Kevin Taylor (Technical Lead):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[09:08] Robert Rodriguez (Customer Success Manager):
+The platform must support data residency requirements across multiple jurisdictions including EU, US, and APAC.
+
+[09:24] Robert Rodriguez (Customer Success Manager):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[09:38] James Lee (Product Manager):
+System failover must complete within 30 seconds with zero data loss for in-flight transactions.
+
+[09:59] Kevin Taylor (Technical Lead):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[10:15] James Lee (Product Manager):
+Transaction scoring must complete within 50 milliseconds at the 99th percentile.
+
+[10:37] Emily Martin (Data Engineer):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[10:51] Jennifer Jones (Solution Engineer):
+The platform must achieve SOC 2 Type II compliance within 6 months of deployment.
+
+[11:11] Robert Rodriguez (Customer Success Manager):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[11:25] Emily Martin (Data Engineer):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[11:34] James Lee (Product Manager):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[11:44] James Lee (Product Manager):
+Let's schedule a follow-up session specifically focused on the security and compliance architecture.
+
+[11:55] Robert Rodriguez (Customer Success Manager):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[12:09] Emily Martin (Data Engineer):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[12:17] Kevin Taylor (Technical Lead):
+All good here. Let's keep the momentum going. Excited to see this come together.
+
+[12:26] Emily Martin (Data Engineer):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #008 - Innovate Solutions (Retail)
+Date: 2026-02-11
+Duration: ~15 minutes
+Participants: 5
+Call Type: Mixed
+================================================================================
+
+[00:00] Brian Clark (Customer Success Manager):
+Good morning everyone, thanks for joining today's call. I'm Brian Clark and I'll be facilitating our discussion on the Foundry IQ implementation for Innovate Solutions.
+
+[00:11] Brian Clark (Customer Success Manager):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:20] Jessica Miller (Data Engineer):
+Hi everyone, Jessica Miller here. I'm the Data Engineer on this engagement. Excited to be part of this.
+
+[00:28] Sarah Moore (Technical Lead):
+Good morning. Sarah Moore, Technical Lead. I've been working closely with the Innovate Solutions team on the pre-work for this.
+
+[00:33] Tom Martinez (Solution Engineer):
+Hi, Tom Martinez here, Solution Engineer. Happy to dive into the details today.
+
+[00:40] David Williams (Product Manager):
+Hey team, I'm David Williams, serving as Product Manager. Looking forward to a productive session.
+
+[00:47] Brian Clark (Customer Success Manager):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:57] Tom Martinez (Solution Engineer):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[01:06] Brian Clark (Customer Success Manager):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:13] Brian Clark (Customer Success Manager):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:28] Sarah Moore (Technical Lead):
+Our customer data is fragmented across online, mobile, and in-store systems. We can't build a unified customer profile, so our personalization efforts are basically guesswork.
+
+[01:49] Tom Martinez (Solution Engineer):
+Is that affecting all teams equally or are certain groups hit harder than others?
+
+[02:01] Brian Clark (Customer Success Manager):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[02:20] Sarah Moore (Technical Lead):
+I've seen Foundry IQ address exactly this kind of challenge at other organizations. The key is getting the data integration right from the start.
+
+[02:37] Jessica Miller (Data Engineer):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:48] Tom Martinez (Solution Engineer):
+We're losing $2M per quarter in markdowns because our demand forecasting is off by 20-30%. We're either overstocked or out of stock on key SKUs.
+
+[03:07] Jessica Miller (Data Engineer):
+Can you quantify the business impact of that? Like, what does that translate to in terms of revenue or operational cost?
+
+[03:23] David Williams (Product Manager):
+We estimate it's costing us roughly $1.5 million annually in lost productivity alone. And that doesn't account for the downstream effects on customer satisfaction.
+
+[03:39] Jessica Miller (Data Engineer):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[03:51] Brian Clark (Customer Success Manager):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[04:03] Brian Clark (Customer Success Manager):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[04:15] David Williams (Product Manager):
+The platform must support customer identity resolution across online, mobile app, in-store, and loyalty program touchpoints.
+
+[04:34] Sarah Moore (Technical Lead):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[04:49] Tom Martinez (Solution Engineer):
+The system must ingest point-of-sale data from 2,500 stores within 5 minutes of each transaction.
+
+[05:08] Brian Clark (Customer Success Manager):
+I agree that's critical. We'll want to build automated tests around that requirement so we can validate it continuously as the platform evolves.
+
+[05:22] Sarah Moore (Technical Lead):
+The platform must support what-if scenario modeling for promotional campaigns including cannibalization effects.
+
+[05:41] Sarah Moore (Technical Lead):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[05:56] Jessica Miller (Data Engineer):
+We need a unified product catalog that reconciles SKUs across all channels with support for product hierarchy and attribute management.
+
+[06:18] Sarah Moore (Technical Lead):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[06:32] Tom Martinez (Solution Engineer):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:46] David Williams (Product Manager):
+The customer data platform must handle 50 million unique customer profiles with sub-second lookup times.
+
+[07:07] Jessica Miller (Data Engineer):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[07:20] Jessica Miller (Data Engineer):
+The system must maintain data freshness of 15 minutes or less for inventory positions across all stores.
+
+[07:40] David Williams (Product Manager):
+That's a rigorous target. We'll need to validate that during the load testing phase. I'd suggest we build performance benchmarks into the acceptance criteria.
+
+[07:53] Sarah Moore (Technical Lead):
+The system must support 99.9% availability during store operating hours with maintenance windows limited to 2 AM - 5 AM local time.
+
+[08:09] Jessica Miller (Data Engineer):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[08:26] Tom Martinez (Solution Engineer):
+All PII must be handled in compliance with GDPR, CCPA, and applicable regional privacy regulations.
+
+[08:46] Jessica Miller (Data Engineer):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[09:01] David Williams (Product Manager):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[09:15] Sarah Moore (Technical Lead):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[09:34] Tom Martinez (Solution Engineer):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[09:52] Jessica Miller (Data Engineer):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[10:14] Sarah Moore (Technical Lead):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[10:34] David Williams (Product Manager):
+Let's talk about the architecture for demand forecasting. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[10:55] Tom Martinez (Solution Engineer):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[11:09] Jessica Miller (Data Engineer):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[11:25] Jessica Miller (Data Engineer):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[11:41] Sarah Moore (Technical Lead):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[11:53] Sarah Moore (Technical Lead):
+For the demand forecasting workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[12:12] David Williams (Product Manager):
+On the inventory optimization front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[12:32] Tom Martinez (Solution Engineer):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[12:50] Jessica Miller (Data Engineer):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[13:11] Sarah Moore (Technical Lead):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[13:26] Brian Clark (Customer Success Manager):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[13:47] Sarah Moore (Technical Lead):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[14:02] David Williams (Product Manager):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[14:16] Jessica Miller (Data Engineer):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[14:32] Brian Clark (Customer Success Manager):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[14:41] Tom Martinez (Solution Engineer):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[14:54] Sarah Moore (Technical Lead):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[15:05] Jessica Miller (Data Engineer):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[15:18] David Williams (Product Manager):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[15:29] Brian Clark (Customer Success Manager):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[15:38] Sarah Moore (Technical Lead):
+Nothing from my side. Appreciate everyone's time. Looking forward to the next steps.
+
+[15:47] Brian Clark (Customer Success Manager):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #009 - NextGen Systems (Manufacturing)
+Date: 2026-02-11
+Duration: ~11 minutes
+Participants: 3
+Call Type: Problem Discovery
+================================================================================
+
+[00:00] Amanda Jones (Data Engineer):
+Good morning everyone, thanks for joining today's call. I'm Amanda Jones and I'll be facilitating our discussion on the Foundry IQ implementation for NextGen Systems.
+
+[00:08] Amanda Jones (Data Engineer):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:14] Rachel Jackson (Customer Success Manager):
+Hey team, I'm Rachel Jackson, serving as Customer Success Manager. Looking forward to a productive session.
+
+[00:19] Kevin Garcia (Solution Engineer):
+Hi everyone, Kevin Garcia here. I'm the Solution Engineer on this engagement. Excited to be part of this.
+
+[00:27] Amanda Jones (Data Engineer):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:39] Kevin Garcia (Solution Engineer):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:48] Amanda Jones (Data Engineer):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[00:56] Amanda Jones (Data Engineer):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:08] Rachel Jackson (Customer Success Manager):
+Unplanned equipment downtime is costing us $500K per incident. We have sensors on everything but no way to correlate the data into predictive insights.
+
+[01:26] Amanda Jones (Data Engineer):
+And that's with your current tooling? What are you using today for that workflow?
+
+[01:43] Rachel Jackson (Customer Success Manager):
+It's been building for about 18 months. We did a POC with another vendor last year but it didn't scale past the pilot phase. That's why we're looking at Foundry IQ now.
+
+[02:01] Amanda Jones (Data Engineer):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[02:17] Amanda Jones (Data Engineer):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:25] Kevin Garcia (Solution Engineer):
+Our supply chain planning still relies on spreadsheets. When a supplier misses a delivery, it takes 2 days to understand the downstream impact on production schedules.
+
+[02:46] Rachel Jackson (Customer Success Manager):
+Is that affecting all teams equally or are certain groups hit harder than others?
+
+[03:00] Amanda Jones (Data Engineer):
+We estimate it's costing us roughly $1.5 million annually in lost productivity alone. And that doesn't account for the downstream effects on customer satisfaction.
+
+[03:19] Kevin Garcia (Solution Engineer):
+This is actually a great use case for Foundry IQ's ontology layer. By unifying the data model, we can eliminate a lot of those manual reconciliation steps.
+
+[03:37] Amanda Jones (Data Engineer):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[03:53] Rachel Jackson (Customer Success Manager):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[04:08] Kevin Garcia (Solution Engineer):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[04:28] Rachel Jackson (Customer Success Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[04:45] Kevin Garcia (Solution Engineer):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[05:06] Amanda Jones (Data Engineer):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[05:28] Amanda Jones (Data Engineer):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[05:43] Rachel Jackson (Customer Success Manager):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[06:02] Kevin Garcia (Solution Engineer):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[06:14] Amanda Jones (Data Engineer):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[06:30] Rachel Jackson (Customer Success Manager):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[06:42] Kevin Garcia (Solution Engineer):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[06:57] Kevin Garcia (Solution Engineer):
+Let's talk about the architecture for equipment monitoring. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[07:11] Rachel Jackson (Customer Success Manager):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[07:23] Amanda Jones (Data Engineer):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[07:39] Rachel Jackson (Customer Success Manager):
+For the equipment monitoring workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[07:55] Kevin Garcia (Solution Engineer):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[08:07] Amanda Jones (Data Engineer):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[08:21] Rachel Jackson (Customer Success Manager):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[08:43] Amanda Jones (Data Engineer):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[08:58] Kevin Garcia (Solution Engineer):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[09:11] Kevin Garcia (Solution Engineer):
+On the predictive maintenance front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[09:31] Amanda Jones (Data Engineer):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[09:46] Amanda Jones (Data Engineer):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[09:57] Kevin Garcia (Solution Engineer):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[10:07] Amanda Jones (Data Engineer):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[10:21] Kevin Garcia (Solution Engineer):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[10:33] Amanda Jones (Data Engineer):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[10:42] Kevin Garcia (Solution Engineer):
+All good here. Let's keep the momentum going. Excited to see this come together.
+
+[10:52] Amanda Jones (Data Engineer):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #010 - Global Industries (Technology)
+Date: 2026-02-11
+Duration: ~9 minutes
+Participants: 3
+Call Type: Requirements Gathering
+================================================================================
+
+[00:00] Tom Jones (Data Engineer):
+Good morning everyone, thanks for joining today's call. I'm Tom Jones and I'll be facilitating our discussion on the Foundry IQ implementation for Global Industries.
+
+[00:11] Tom Jones (Data Engineer):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:18] Daniel Harris (Technical Lead):
+Hi, Daniel Harris here, Technical Lead. Happy to dive into the details today.
+
+[00:23] Emily Patel (Solution Engineer):
+Hey team, I'm Emily Patel, serving as Solution Engineer. Looking forward to a productive session.
+
+[00:31] Tom Jones (Data Engineer):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:39] Emily Patel (Solution Engineer):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:46] Tom Jones (Data Engineer):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[00:52] Tom Jones (Data Engineer):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:02] Emily Patel (Solution Engineer):
+Our current data platform can't handle multi-tenant isolation properly. One large customer's queries regularly slow down the entire system for everyone else.
+
+[01:23] Tom Jones (Data Engineer):
+And that's with your current tooling? What are you using today for that workflow?
+
+[01:40] Emily Patel (Solution Engineer):
+The operations team is definitely hit the hardest. They're the ones dealing with the manual workarounds every single day. But it cascades - leadership can't get accurate reports either.
+
+[01:57] Tom Jones (Data Engineer):
+This is actually a great use case for Foundry IQ's ontology layer. By unifying the data model, we can eliminate a lot of those manual reconciliation steps.
+
+[02:10] Emily Patel (Solution Engineer):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:18] Daniel Harris (Technical Lead):
+Our product analytics pipeline has a 4-hour lag. Product managers are making feature decisions based on yesterday's data while A/B tests are running in real time.
+
+[02:36] Daniel Harris (Technical Lead):
+And that's with your current tooling? What are you using today for that workflow?
+
+[02:48] Emily Patel (Solution Engineer):
+We're using a mix of custom scripts, some legacy ETL tools, and honestly a lot of Excel. It's not sustainable and everyone knows it.
+
+[03:08] Daniel Harris (Technical Lead):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[03:26] Tom Jones (Data Engineer):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[03:38] Tom Jones (Data Engineer):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[03:47] Daniel Harris (Technical Lead):
+The system must support multi-tenant data isolation with configurable compute and storage quotas per tenant.
+
+[04:05] Emily Patel (Solution Engineer):
+Noted. I'll map that to the specific Foundry IQ modules we'll need to configure. That touches the ontology layer and possibly the Workshop application.
+
+[04:21] Daniel Harris (Technical Lead):
+The system must support real-time event streaming with exactly-once semantics for product analytics events.
+
+[04:43] Tom Jones (Data Engineer):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[04:56] Emily Patel (Solution Engineer):
+We need automated data pipeline monitoring with SLA tracking, freshness alerts, and dependency-aware failure notifications.
+
+[05:14] Daniel Harris (Technical Lead):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[05:29] Emily Patel (Solution Engineer):
+The platform must provide a unified semantic layer that abstracts across all 15 microservice data stores.
+
+[05:45] Daniel Harris (Technical Lead):
+Noted. I'll map that to the specific Foundry IQ modules we'll need to configure. That touches the ontology layer and possibly the Workshop application.
+
+[06:00] Tom Jones (Data Engineer):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:12] Emily Patel (Solution Engineer):
+The system must support blue-green deployments with zero-downtime upgrades.
+
+[06:29] Daniel Harris (Technical Lead):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[06:43] Daniel Harris (Technical Lead):
+Data encryption must be enforced at rest and in transit with customer-managed encryption keys for enterprise tenants.
+
+[07:00] Tom Jones (Data Engineer):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[07:17] Emily Patel (Solution Engineer):
+The platform must support at least 200 concurrent analytical users without query queueing.
+
+[07:37] Tom Jones (Data Engineer):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[07:51] Daniel Harris (Technical Lead):
+Query response times for standard dashboards must be under 3 seconds for 95th percentile.
+
+[08:06] Tom Jones (Data Engineer):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[08:19] Tom Jones (Data Engineer):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[08:30] Tom Jones (Data Engineer):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[08:44] Daniel Harris (Technical Lead):
+Let's schedule a follow-up session specifically focused on the security and compliance architecture.
+
+[08:54] Tom Jones (Data Engineer):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[09:05] Daniel Harris (Technical Lead):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[09:18] Tom Jones (Data Engineer):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[09:28] Daniel Harris (Technical Lead):
+No, I think we covered a lot of ground today. Really productive session. Thanks everyone.
+
+[09:37] Tom Jones (Data Engineer):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #011 - Cobalt Technologies (Healthcare)
+Date: 2026-02-11
+Duration: ~13 minutes
+Participants: 5
+Call Type: Architecture Review
+================================================================================
+
+[00:00] Aisha Nakamura (Product Manager):
+Good morning everyone, thanks for joining today's call. I'm Aisha Nakamura and I'll be facilitating our discussion on the Foundry IQ implementation for Cobalt Technologies.
+
+[00:12] Aisha Nakamura (Product Manager):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:20] Jessica Harris (Data Engineer):
+Good morning. Jessica Harris, Data Engineer. I've been working closely with the Cobalt Technologies team on the pre-work for this.
+
+[00:26] Emily Thompson (Technical Lead):
+Hi everyone, Emily Thompson here. I'm the Technical Lead on this engagement. Excited to be part of this.
+
+[00:31] Brian Taylor (Customer Success Manager):
+Hi, Brian Taylor here, Customer Success Manager. Happy to dive into the details today.
+
+[00:37] Sarah Garcia (Solution Architect):
+Hi everyone, Sarah Garcia here. I'm the Solution Architect on this engagement. Excited to be part of this.
+
+[00:45] Aisha Nakamura (Product Manager):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:53] Emily Thompson (Technical Lead):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:59] Aisha Nakamura (Product Manager):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:07] Jessica Harris (Data Engineer):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[01:25] Sarah Garcia (Solution Architect):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[01:41] Sarah Garcia (Solution Architect):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[01:55] Aisha Nakamura (Product Manager):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[02:11] Sarah Garcia (Solution Architect):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[02:28] Jessica Harris (Data Engineer):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[02:50] Aisha Nakamura (Product Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[03:02] Sarah Garcia (Solution Architect):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[03:23] Brian Taylor (Customer Success Manager):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[03:40] Emily Thompson (Technical Lead):
+Let's talk about the architecture for patient analytics. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[03:59] Sarah Garcia (Solution Architect):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[04:15] Brian Taylor (Customer Success Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[04:27] Jessica Harris (Data Engineer):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[04:46] Aisha Nakamura (Product Manager):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[05:00] Sarah Garcia (Solution Architect):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[05:18] Brian Taylor (Customer Success Manager):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[05:35] Emily Thompson (Technical Lead):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[05:54] Aisha Nakamura (Product Manager):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[06:14] Emily Thompson (Technical Lead):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[06:28] Emily Thompson (Technical Lead):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[06:49] Brian Taylor (Customer Success Manager):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[07:04] Aisha Nakamura (Product Manager):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[07:17] Aisha Nakamura (Product Manager):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[07:29] Sarah Garcia (Solution Architect):
+The platform must support automated patient cohort generation based on configurable clinical criteria including ICD-10 codes, lab results, and medication history.
+
+[07:49] Brian Taylor (Customer Success Manager):
+I agree that's critical. We'll want to build automated tests around that requirement so we can validate it continuously as the platform evolves.
+
+[08:04] Brian Taylor (Customer Success Manager):
+Users must be able to build custom clinical dashboards without engineering support, using a drag-and-drop interface.
+
+[08:20] Aisha Nakamura (Product Manager):
+Good. Let me make sure I understand the acceptance criteria there. Are we talking about a binary pass/fail or are there graduated levels of compliance?
+
+[08:37] Jessica Harris (Data Engineer):
+We need the ability to run federated queries across all five EHR data sources as if they were a single dataset.
+
+[08:56] Emily Thompson (Technical Lead):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[09:13] Jessica Harris (Data Engineer):
+All data transformations must produce an auditable lineage trail showing source-to-destination data flow.
+
+[09:28] Emily Thompson (Technical Lead):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[09:42] Aisha Nakamura (Product Manager):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[09:56] Brian Taylor (Customer Success Manager):
+The system must comply with HIPAA, HITECH, and state-level privacy regulations simultaneously.
+
+[10:17] Jessica Harris (Data Engineer):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[10:29] Sarah Garcia (Solution Architect):
+Disaster recovery must support an RPO of 1 hour and an RTO of 4 hours.
+
+[10:45] Brian Taylor (Customer Success Manager):
+I want to make sure we're being realistic there. Let me check with the infrastructure team on what's achievable with the current resource allocation.
+
+[11:00] Brian Taylor (Customer Success Manager):
+System must be able to scale horizontally to handle a 10x increase in data volume over the next 3 years without architectural changes.
+
+[11:15] Jessica Harris (Data Engineer):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[11:32] Jessica Harris (Data Engineer):
+All data at rest and in transit must be encrypted using AES-256 and TLS 1.3 respectively.
+
+[11:47] Sarah Garcia (Solution Architect):
+That's a rigorous target. We'll need to validate that during the load testing phase. I'd suggest we build performance benchmarks into the acceptance criteria.
+
+[12:03] Aisha Nakamura (Product Manager):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[12:15] Emily Thompson (Technical Lead):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[12:27] Emily Thompson (Technical Lead):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[12:41] Emily Thompson (Technical Lead):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[12:55] Aisha Nakamura (Product Manager):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[13:03] Emily Thompson (Technical Lead):
+Nothing from my side. Appreciate everyone's time. Looking forward to the next steps.
+
+[13:09] Aisha Nakamura (Product Manager):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #012 - Acme Corp (Financial Services)
+Date: 2026-02-11
+Duration: ~15 minutes
+Participants: 4
+Call Type: Mixed
+================================================================================
+
+[00:00] Daniel Brown (Solution Engineer):
+Good morning everyone, thanks for joining today's call. I'm Daniel Brown and I'll be facilitating our discussion on the Foundry IQ implementation for Acme Corp.
+
+[00:09] Daniel Brown (Solution Engineer):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:18] Lisa Anderson (Product Manager):
+Hi, Lisa Anderson here, Product Manager. Happy to dive into the details today.
+
+[00:23] Ashley Taylor (Data Engineer):
+Hi everyone, Ashley Taylor here. I'm the Data Engineer on this engagement. Excited to be part of this.
+
+[00:29] James White (Customer Success Manager):
+Good morning. James White, Customer Success Manager. I've been working closely with the Acme Corp team on the pre-work for this.
+
+[00:37] Daniel Brown (Solution Engineer):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:49] Lisa Anderson (Product Manager):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:58] Daniel Brown (Solution Engineer):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:04] Daniel Brown (Solution Engineer):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:16] James White (Customer Success Manager):
+Our risk models run in batch overnight but the market moves in real time. We need intraday risk recalculation to stay competitive.
+
+[01:34] Lisa Anderson (Product Manager):
+Walk me through a specific example. What does that look like day-to-day for your team?
+
+[01:48] Ashley Taylor (Data Engineer):
+We estimate it's costing us roughly $1.5 million annually in lost productivity alone. And that doesn't account for the downstream effects on customer satisfaction.
+
+[02:05] James White (Customer Success Manager):
+This is actually a great use case for Foundry IQ's ontology layer. By unifying the data model, we can eliminate a lot of those manual reconciliation steps.
+
+[02:23] Daniel Brown (Solution Engineer):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:32] Lisa Anderson (Product Manager):
+We're processing trades across 12 different asset classes and the reconciliation process takes 6 hours. By the time discrepancies are found, settlement windows have closed.
+
+[02:49] James White (Customer Success Manager):
+Walk me through a specific example. What does that look like day-to-day for your team?
+
+[03:02] Lisa Anderson (Product Manager):
+Sure. Just last week, we had a situation where the data was 36 hours stale. The team made a decision based on that data and it cost us a significant customer escalation.
+
+[03:24] Ashley Taylor (Data Engineer):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[03:36] Daniel Brown (Solution Engineer):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[03:48] Daniel Brown (Solution Engineer):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[03:57] James White (Customer Success Manager):
+The system must support real-time transaction scoring with the ability to process at least 10,000 transactions per second.
+
+[04:17] Lisa Anderson (Product Manager):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[04:29] Lisa Anderson (Product Manager):
+We need full audit logging of every data access, transformation, and model execution with tamper-proof storage.
+
+[04:44] Daniel Brown (Solution Engineer):
+Noted. I'll map that to the specific Foundry IQ modules we'll need to configure. That touches the ontology layer and possibly the Workshop application.
+
+[05:00] Ashley Taylor (Data Engineer):
+All ML model outputs must include feature importance scores and decision explanations in human-readable format for regulatory review.
+
+[05:20] Daniel Brown (Solution Engineer):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[05:38] Lisa Anderson (Product Manager):
+The platform must support multi-entity resolution across accounts, customers, and counterparties with configurable matching rules.
+
+[05:57] James White (Customer Success Manager):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[06:09] Daniel Brown (Solution Engineer):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:21] James White (Customer Success Manager):
+Transaction scoring must complete within 50 milliseconds at the 99th percentile.
+
+[06:43] Daniel Brown (Solution Engineer):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[07:00] Lisa Anderson (Product Manager):
+The platform must achieve SOC 2 Type II compliance within 6 months of deployment.
+
+[07:21] Daniel Brown (Solution Engineer):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[07:36] James White (Customer Success Manager):
+All data must be retained for a minimum of 7 years in compliance with SEC and FINRA regulations.
+
+[07:54] Daniel Brown (Solution Engineer):
+I want to make sure we're being realistic there. Let me check with the infrastructure team on what's achievable with the current resource allocation.
+
+[08:12] Lisa Anderson (Product Manager):
+The system must support concurrent access by at least 500 analysts without performance degradation.
+
+[08:34] Ashley Taylor (Data Engineer):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[08:47] Lisa Anderson (Product Manager):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[09:01] Daniel Brown (Solution Engineer):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[09:18] Daniel Brown (Solution Engineer):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[09:34] Ashley Taylor (Data Engineer):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[09:49] James White (Customer Success Manager):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[10:03] Lisa Anderson (Product Manager):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[10:16] Daniel Brown (Solution Engineer):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[10:30] Lisa Anderson (Product Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[10:43] Lisa Anderson (Product Manager):
+On the regulatory compliance front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[11:01] Ashley Taylor (Data Engineer):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[11:13] Daniel Brown (Solution Engineer):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[11:30] Lisa Anderson (Product Manager):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[11:49] Ashley Taylor (Data Engineer):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[12:05] Ashley Taylor (Data Engineer):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[12:26] Lisa Anderson (Product Manager):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[12:39] Daniel Brown (Solution Engineer):
+For the anti-money laundering workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[12:59] Lisa Anderson (Product Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[13:12] James White (Customer Success Manager):
+Let's talk about the architecture for anti-money laundering. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[13:30] Lisa Anderson (Product Manager):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[13:45] Daniel Brown (Solution Engineer):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[14:00] Daniel Brown (Solution Engineer):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[14:14] Daniel Brown (Solution Engineer):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[14:23] Ashley Taylor (Data Engineer):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[14:38] James White (Customer Success Manager):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[14:49] James White (Customer Success Manager):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[14:59] Daniel Brown (Solution Engineer):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[15:07] Ashley Taylor (Data Engineer):
+Nothing from my side. Appreciate everyone's time. Looking forward to the next steps.
+
+[15:17] Daniel Brown (Solution Engineer):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #013 - Pioneer Tech (Retail)
+Date: 2026-02-11
+Duration: ~10 minutes
+Participants: 3
+Call Type: Problem Discovery
+================================================================================
+
+[00:00] Wei Rodriguez (Solution Architect):
+Good morning everyone, thanks for joining today's call. I'm Wei Rodriguez and I'll be facilitating our discussion on the Foundry IQ implementation for Pioneer Tech.
+
+[00:10] Wei Rodriguez (Solution Architect):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:19] Michelle Harris (Solution Engineer):
+Hey team, I'm Michelle Harris, serving as Solution Engineer. Looking forward to a productive session.
+
+[00:25] Robert Chen (Customer Success Manager):
+Hey team, I'm Robert Chen, serving as Customer Success Manager. Looking forward to a productive session.
+
+[00:33] Wei Rodriguez (Solution Architect):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:44] Michelle Harris (Solution Engineer):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:51] Wei Rodriguez (Solution Architect):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[00:56] Wei Rodriguez (Solution Architect):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:07] Robert Chen (Customer Success Manager):
+Our pricing team is making decisions based on weekly reports. Competitors are adjusting prices hourly and we're always a step behind.
+
+[01:24] Wei Rodriguez (Solution Architect):
+And that's with your current tooling? What are you using today for that workflow?
+
+[01:42] Michelle Harris (Solution Engineer):
+The operations team is definitely hit the hardest. They're the ones dealing with the manual workarounds every single day. But it cascades - leadership can't get accurate reports either.
+
+[01:58] Robert Chen (Customer Success Manager):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[02:13] Michelle Harris (Solution Engineer):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:21] Michelle Harris (Solution Engineer):
+Supply chain disruptions are taking us 3-4 days to detect. By then, empty shelves have already cost us significant revenue and customer goodwill.
+
+[02:41] Wei Rodriguez (Solution Architect):
+How long has this been a problem? And what have you tried so far to address it?
+
+[02:57] Robert Chen (Customer Success Manager):
+The operations team is definitely hit the hardest. They're the ones dealing with the manual workarounds every single day. But it cascades - leadership can't get accurate reports either.
+
+[03:15] Michelle Harris (Solution Engineer):
+This is actually a great use case for Foundry IQ's ontology layer. By unifying the data model, we can eliminate a lot of those manual reconciliation steps.
+
+[03:29] Michelle Harris (Solution Engineer):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[03:48] Wei Rodriguez (Solution Architect):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[04:04] Robert Chen (Customer Success Manager):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[04:25] Michelle Harris (Solution Engineer):
+On the real-time data front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[04:47] Robert Chen (Customer Success Manager):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[05:00] Robert Chen (Customer Success Manager):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[05:21] Wei Rodriguez (Solution Architect):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[05:37] Robert Chen (Customer Success Manager):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[05:56] Michelle Harris (Solution Engineer):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[06:13] Michelle Harris (Solution Engineer):
+For the supply chain analytics workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[06:29] Robert Chen (Customer Success Manager):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[06:50] Michelle Harris (Solution Engineer):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[07:10] Robert Chen (Customer Success Manager):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[07:29] Michelle Harris (Solution Engineer):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[07:42] Michelle Harris (Solution Engineer):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[07:56] Wei Rodriguez (Solution Architect):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[08:13] Robert Chen (Customer Success Manager):
+Let's talk about the architecture for supply chain analytics. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[08:30] Wei Rodriguez (Solution Architect):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[08:46] Michelle Harris (Solution Engineer):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[09:06] Michelle Harris (Solution Engineer):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[09:27] Wei Rodriguez (Solution Architect):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[09:38] Wei Rodriguez (Solution Architect):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[09:48] Robert Chen (Customer Success Manager):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[09:59] Robert Chen (Customer Success Manager):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[10:14] Michelle Harris (Solution Engineer):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[10:28] Wei Rodriguez (Solution Architect):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[10:40] Robert Chen (Customer Success Manager):
+All good here. Let's keep the momentum going. Excited to see this come together.
+
+[10:49] Wei Rodriguez (Solution Architect):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #014 - Innovate Solutions (Manufacturing)
+Date: 2026-02-11
+Duration: ~9 minutes
+Participants: 4
+Call Type: Requirements Gathering
+================================================================================
+
+[00:00] Carlos Okonkwo (Solution Architect):
+Good morning everyone, thanks for joining today's call. I'm Carlos Okonkwo and I'll be facilitating our discussion on the Foundry IQ implementation for Innovate Solutions.
+
+[00:10] Carlos Okonkwo (Solution Architect):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:16] Jessica Garcia (Product Manager):
+Hi, Jessica Garcia here, Product Manager. Happy to dive into the details today.
+
+[00:23] David Williams (Customer Success Manager):
+Hi everyone, David Williams here. I'm the Customer Success Manager on this engagement. Excited to be part of this.
+
+[00:30] Chris Moore (Data Engineer):
+Hi everyone, Chris Moore here. I'm the Data Engineer on this engagement. Excited to be part of this.
+
+[00:37] Carlos Okonkwo (Solution Architect):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:47] Jessica Garcia (Product Manager):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:54] Carlos Okonkwo (Solution Architect):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:00] Carlos Okonkwo (Solution Architect):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:10] Jessica Garcia (Product Manager):
+Unplanned equipment downtime is costing us $500K per incident. We have sensors on everything but no way to correlate the data into predictive insights.
+
+[01:28] Chris Moore (Data Engineer):
+And that's with your current tooling? What are you using today for that workflow?
+
+[01:44] Jessica Garcia (Product Manager):
+The operations team is definitely hit the hardest. They're the ones dealing with the manual workarounds every single day. But it cascades - leadership can't get accurate reports either.
+
+[01:59] David Williams (Customer Success Manager):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[02:16] Carlos Okonkwo (Solution Architect):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:25] Chris Moore (Data Engineer):
+We're collecting 2TB of IoT data per day from the factory floor but only analyzing about 5% of it. The rest just sits in cold storage because we don't have the tools to process it.
+
+[02:46] Jessica Garcia (Product Manager):
+And that's with your current tooling? What are you using today for that workflow?
+
+[02:59] Jessica Garcia (Product Manager):
+We estimate it's costing us roughly $1.5 million annually in lost productivity alone. And that doesn't account for the downstream effects on customer satisfaction.
+
+[03:17] David Williams (Customer Success Manager):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[03:34] Carlos Okonkwo (Solution Architect):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[03:47] Carlos Okonkwo (Solution Architect):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[03:55] Jessica Garcia (Product Manager):
+The platform must support integration with MES, ERP, and SCADA systems through configurable connectors.
+
+[04:10] David Williams (Customer Success Manager):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[04:24] Chris Moore (Data Engineer):
+The platform must support digital twin modeling for at least 200 pieces of critical equipment with real-time state synchronization.
+
+[04:42] Jessica Garcia (Product Manager):
+I agree that's critical. We'll want to build automated tests around that requirement so we can validate it continuously as the platform evolves.
+
+[04:57] David Williams (Customer Success Manager):
+Users must be able to define custom anomaly detection rules combining sensor thresholds, temporal patterns, and equipment context.
+
+[05:15] Carlos Okonkwo (Solution Architect):
+Noted. I'll map that to the specific Foundry IQ modules we'll need to configure. That touches the ontology layer and possibly the Workshop application.
+
+[05:27] Chris Moore (Data Engineer):
+The system must ingest and process streaming data from 50,000 IoT sensors with support for OPC UA, MQTT, and Modbus protocols.
+
+[05:45] David Williams (Customer Success Manager):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[05:59] Carlos Okonkwo (Solution Architect):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:11] David Williams (Customer Success Manager):
+System must support edge computing deployment for latency-sensitive use cases with eventual consistency to the central platform.
+
+[06:31] Jessica Garcia (Product Manager):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[06:49] Jessica Garcia (Product Manager):
+The system must retain raw sensor data for 90 days in hot storage and 5 years in cold storage with seamless query across tiers.
+
+[07:09] Carlos Okonkwo (Solution Architect):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[07:27] David Williams (Customer Success Manager):
+IoT data ingestion must support sustained throughput of 1 million events per second with at-most-once delivery guarantees.
+
+[07:47] Carlos Okonkwo (Solution Architect):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[08:03] David Williams (Customer Success Manager):
+Anomaly detection alerts must fire within 5 seconds of the triggering sensor reading.
+
+[08:25] Chris Moore (Data Engineer):
+That's a rigorous target. We'll need to validate that during the load testing phase. I'd suggest we build performance benchmarks into the acceptance criteria.
+
+[08:41] Carlos Okonkwo (Solution Architect):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[08:49] Carlos Okonkwo (Solution Architect):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[09:01] Carlos Okonkwo (Solution Architect):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[09:13] Chris Moore (Data Engineer):
+Let's schedule a follow-up session specifically focused on the security and compliance architecture.
+
+[09:25] Carlos Okonkwo (Solution Architect):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[09:33] Chris Moore (Data Engineer):
+Nothing from my side. Appreciate everyone's time. Looking forward to the next steps.
+
+[09:39] Carlos Okonkwo (Solution Architect):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #015 - NextGen Systems (Technology)
+Date: 2026-02-11
+Duration: ~13 minutes
+Participants: 3
+Call Type: Architecture Review
+================================================================================
+
+[00:00] Matthew Martinez (Customer Success Manager):
+Good morning everyone, thanks for joining today's call. I'm Matthew Martinez and I'll be facilitating our discussion on the Foundry IQ implementation for NextGen Systems.
+
+[00:10] Matthew Martinez (Customer Success Manager):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:20] Emily White (Solution Architect):
+Hey team, I'm Emily White, serving as Solution Architect. Looking forward to a productive session.
+
+[00:27] Michael Johnson (Technical Lead):
+Hi, Michael Johnson here, Technical Lead. Happy to dive into the details today.
+
+[00:33] Matthew Martinez (Customer Success Manager):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:45] Emily White (Solution Architect):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:51] Matthew Martinez (Customer Success Manager):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[00:57] Emily White (Solution Architect):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[01:13] Matthew Martinez (Customer Success Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[01:28] Michael Johnson (Technical Lead):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[01:42] Emily White (Solution Architect):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[01:55] Matthew Martinez (Customer Success Manager):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[02:09] Emily White (Solution Architect):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[02:24] Emily White (Solution Architect):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[02:39] Matthew Martinez (Customer Success Manager):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[03:01] Michael Johnson (Technical Lead):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[03:15] Emily White (Solution Architect):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[03:27] Matthew Martinez (Customer Success Manager):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[03:42] Michael Johnson (Technical Lead):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[04:03] Matthew Martinez (Customer Success Manager):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[04:19] Michael Johnson (Technical Lead):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[04:36] Matthew Martinez (Customer Success Manager):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[04:52] Michael Johnson (Technical Lead):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[05:07] Matthew Martinez (Customer Success Manager):
+For the system monitoring workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[05:29] Emily White (Solution Architect):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[05:46] Matthew Martinez (Customer Success Manager):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[06:07] Emily White (Solution Architect):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[06:24] Michael Johnson (Technical Lead):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[06:40] Matthew Martinez (Customer Success Manager):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[06:55] Matthew Martinez (Customer Success Manager):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[07:09] Matthew Martinez (Customer Success Manager):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[07:18] Emily White (Solution Architect):
+The system must support real-time event streaming with exactly-once semantics for product analytics events.
+
+[07:37] Matthew Martinez (Customer Success Manager):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[07:54] Emily White (Solution Architect):
+We need automated data pipeline monitoring with SLA tracking, freshness alerts, and dependency-aware failure notifications.
+
+[08:15] Matthew Martinez (Customer Success Manager):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[08:27] Emily White (Solution Architect):
+The platform must provide a self-service query interface where product managers can explore data without writing SQL.
+
+[08:48] Michael Johnson (Technical Lead):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[09:03] Emily White (Solution Architect):
+The platform must provide a unified semantic layer that abstracts across all 15 microservice data stores.
+
+[09:21] Matthew Martinez (Customer Success Manager):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[09:33] Matthew Martinez (Customer Success Manager):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[09:43] Michael Johnson (Technical Lead):
+Data encryption must be enforced at rest and in transit with customer-managed encryption keys for enterprise tenants.
+
+[10:02] Matthew Martinez (Customer Success Manager):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[10:16] Michael Johnson (Technical Lead):
+New data source onboarding must be completable by a developer in under 4 hours including schema definition and pipeline setup.
+
+[10:34] Matthew Martinez (Customer Success Manager):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[10:47] Michael Johnson (Technical Lead):
+The platform must support at least 200 concurrent analytical users without query queueing.
+
+[11:06] Matthew Martinez (Customer Success Manager):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[11:21] Emily White (Solution Architect):
+Query response times for standard dashboards must be under 3 seconds for 95th percentile.
+
+[11:40] Michael Johnson (Technical Lead):
+That's a rigorous target. We'll need to validate that during the load testing phase. I'd suggest we build performance benchmarks into the acceptance criteria.
+
+[11:55] Matthew Martinez (Customer Success Manager):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[12:06] Emily White (Solution Architect):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[12:18] Matthew Martinez (Customer Success Manager):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[12:31] Matthew Martinez (Customer Success Manager):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[12:43] Matthew Martinez (Customer Success Manager):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[12:53] Matthew Martinez (Customer Success Manager):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[13:01] Emily White (Solution Architect):
+Just want to say this was a great discussion. I feel much more confident about the Foundry IQ approach now.
+
+[13:10] Matthew Martinez (Customer Success Manager):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #016 - Pinnacle Retail (Healthcare)
+Date: 2026-02-11
+Duration: ~14 minutes
+Participants: 5
+Call Type: Mixed
+================================================================================
+
+[00:00] Emily Martinez (Solution Engineer):
+Good morning everyone, thanks for joining today's call. I'm Emily Martinez and I'll be facilitating our discussion on the Foundry IQ implementation for Pinnacle Retail.
+
+[00:10] Emily Martinez (Solution Engineer):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:20] Chris Chen (Solution Architect):
+Hey team, I'm Chris Chen, serving as Solution Architect. Looking forward to a productive session.
+
+[00:27] Matthew Davis (Data Engineer):
+Hi, Matthew Davis here, Data Engineer. Happy to dive into the details today.
+
+[00:33] Jennifer Rodriguez (Technical Lead):
+Hi, Jennifer Rodriguez here, Technical Lead. Happy to dive into the details today.
+
+[00:38] Rachel Lee (Customer Success Manager):
+Hi everyone, Rachel Lee here. I'm the Customer Success Manager on this engagement. Excited to be part of this.
+
+[00:43] Emily Martinez (Solution Engineer):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:53] Matthew Davis (Data Engineer):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[01:03] Emily Martinez (Solution Engineer):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:09] Emily Martinez (Solution Engineer):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:19] Matthew Davis (Data Engineer):
+Our population health models are running on stale data - sometimes 48 hours old. By the time we identify at-risk patients, interventions are already too late.
+
+[01:36] Emily Martinez (Solution Engineer):
+Walk me through a specific example. What does that look like day-to-day for your team?
+
+[01:52] Jennifer Rodriguez (Technical Lead):
+The operations team is definitely hit the hardest. They're the ones dealing with the manual workarounds every single day. But it cascades - leadership can't get accurate reports either.
+
+[02:13] Rachel Lee (Customer Success Manager):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[02:31] Matthew Davis (Data Engineer):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:40] Jennifer Rodriguez (Technical Lead):
+We have data siloed across five different EHR systems and there's no unified view of patient journeys. Clinicians are making decisions with incomplete information.
+
+[02:55] Rachel Lee (Customer Success Manager):
+Can you quantify the business impact of that? Like, what does that translate to in terms of revenue or operational cost?
+
+[03:11] Emily Martinez (Solution Engineer):
+It's been building for about 18 months. We did a POC with another vendor last year but it didn't scale past the pilot phase. That's why we're looking at Foundry IQ now.
+
+[03:33] Rachel Lee (Customer Success Manager):
+This is actually a great use case for Foundry IQ's ontology layer. By unifying the data model, we can eliminate a lot of those manual reconciliation steps.
+
+[03:45] Emily Martinez (Solution Engineer):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[04:00] Emily Martinez (Solution Engineer):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[04:12] Chris Chen (Solution Architect):
+The system must support real-time ingestion from HL7 FHIR endpoints with sub-second latency for critical patient events.
+
+[04:28] Jennifer Rodriguez (Technical Lead):
+Good. Let me make sure I understand the acceptance criteria there. Are we talking about a binary pass/fail or are there graduated levels of compliance?
+
+[04:43] Jennifer Rodriguez (Technical Lead):
+The platform must support automated patient cohort generation based on configurable clinical criteria including ICD-10 codes, lab results, and medication history.
+
+[04:59] Matthew Davis (Data Engineer):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[05:12] Chris Chen (Solution Architect):
+The system must generate automated alerts when patient risk scores exceed configurable thresholds.
+
+[05:27] Rachel Lee (Customer Success Manager):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[05:41] Rachel Lee (Customer Success Manager):
+All data transformations must produce an auditable lineage trail showing source-to-destination data flow.
+
+[05:59] Matthew Davis (Data Engineer):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[06:13] Rachel Lee (Customer Success Manager):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:27] Matthew Davis (Data Engineer):
+Dashboard queries must return results within 2 seconds for datasets up to 50 million records.
+
+[06:49] Emily Martinez (Solution Engineer):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[07:02] Rachel Lee (Customer Success Manager):
+The system must comply with HIPAA, HITECH, and state-level privacy regulations simultaneously.
+
+[07:22] Jennifer Rodriguez (Technical Lead):
+That's a rigorous target. We'll need to validate that during the load testing phase. I'd suggest we build performance benchmarks into the acceptance criteria.
+
+[07:34] Chris Chen (Solution Architect):
+All data at rest and in transit must be encrypted using AES-256 and TLS 1.3 respectively.
+
+[07:49] Emily Martinez (Solution Engineer):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[08:03] Rachel Lee (Customer Success Manager):
+The system must maintain 99.95% uptime with zero planned downtime during business hours.
+
+[08:20] Emily Martinez (Solution Engineer):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[08:32] Rachel Lee (Customer Success Manager):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[08:46] Jennifer Rodriguez (Technical Lead):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[09:05] Rachel Lee (Customer Success Manager):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[09:19] Emily Martinez (Solution Engineer):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[09:41] Chris Chen (Solution Architect):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[09:55] Chris Chen (Solution Architect):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[10:11] Chris Chen (Solution Architect):
+Let's talk about the architecture for patient analytics. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[10:31] Emily Martinez (Solution Engineer):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[10:52] Jennifer Rodriguez (Technical Lead):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[11:08] Rachel Lee (Customer Success Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[11:24] Chris Chen (Solution Architect):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[11:43] Jennifer Rodriguez (Technical Lead):
+For the patient analytics workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[12:03] Matthew Davis (Data Engineer):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[12:19] Jennifer Rodriguez (Technical Lead):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[12:39] Rachel Lee (Customer Success Manager):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[12:57] Matthew Davis (Data Engineer):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[13:11] Emily Martinez (Solution Engineer):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[13:19] Matthew Davis (Data Engineer):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[13:33] Emily Martinez (Solution Engineer):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[13:44] Emily Martinez (Solution Engineer):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[13:56] Jennifer Rodriguez (Technical Lead):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[14:08] Emily Martinez (Solution Engineer):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[14:17] Chris Chen (Solution Architect):
+Nothing from my side. Appreciate everyone's time. Looking forward to the next steps.
+
+[14:23] Emily Martinez (Solution Engineer):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #017 - Acme Corp (Financial Services)
+Date: 2026-02-11
+Duration: ~9 minutes
+Participants: 3
+Call Type: Problem Discovery
+================================================================================
+
+[00:00] Amanda Taylor (Solution Architect):
+Good morning everyone, thanks for joining today's call. I'm Amanda Taylor and I'll be facilitating our discussion on the Foundry IQ implementation for Acme Corp.
+
+[00:09] Amanda Taylor (Solution Architect):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:17] Carlos Thompson (Solution Engineer):
+Hey team, I'm Carlos Thompson, serving as Solution Engineer. Looking forward to a productive session.
+
+[00:22] Wei Johnson (Product Manager):
+Hey team, I'm Wei Johnson, serving as Product Manager. Looking forward to a productive session.
+
+[00:27] Amanda Taylor (Solution Architect):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:36] Carlos Thompson (Solution Engineer):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[00:43] Amanda Taylor (Solution Architect):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[00:48] Amanda Taylor (Solution Architect):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:01] Wei Johnson (Product Manager):
+We're processing trades across 12 different asset classes and the reconciliation process takes 6 hours. By the time discrepancies are found, settlement windows have closed.
+
+[01:22] Carlos Thompson (Solution Engineer):
+How long has this been a problem? And what have you tried so far to address it?
+
+[01:37] Wei Johnson (Product Manager):
+It's been building for about 18 months. We did a POC with another vendor last year but it didn't scale past the pilot phase. That's why we're looking at Foundry IQ now.
+
+[01:58] Carlos Thompson (Solution Engineer):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[02:16] Wei Johnson (Product Manager):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:25] Wei Johnson (Product Manager):
+Our risk models run in batch overnight but the market moves in real time. We need intraday risk recalculation to stay competitive.
+
+[02:46] Amanda Taylor (Solution Architect):
+How long has this been a problem? And what have you tried so far to address it?
+
+[03:03] Wei Johnson (Product Manager):
+We're using a mix of custom scripts, some legacy ETL tools, and honestly a lot of Excel. It's not sustainable and everyone knows it.
+
+[03:22] Carlos Thompson (Solution Engineer):
+I've seen Foundry IQ address exactly this kind of challenge at other organizations. The key is getting the data integration right from the start.
+
+[03:40] Carlos Thompson (Solution Engineer):
+Let's talk about the architecture for anti-money laundering. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[03:55] Carlos Thompson (Solution Engineer):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[04:11] Wei Johnson (Product Manager):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[04:33] Carlos Thompson (Solution Engineer):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[04:46] Amanda Taylor (Solution Architect):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[05:07] Wei Johnson (Product Manager):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[05:22] Carlos Thompson (Solution Engineer):
+On the model risk management front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[05:41] Wei Johnson (Product Manager):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[05:53] Wei Johnson (Product Manager):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[06:07] Carlos Thompson (Solution Engineer):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[06:24] Amanda Taylor (Solution Architect):
+I want to walk through the data model. We've identified about 20 core object types in the ontology. Each one maps to a business entity and has defined relationships to other objects.
+
+[06:41] Wei Johnson (Product Manager):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[06:55] Amanda Taylor (Solution Architect):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[07:16] Carlos Thompson (Solution Engineer):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[07:34] Wei Johnson (Product Manager):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[07:56] Carlos Thompson (Solution Engineer):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[08:10] Amanda Taylor (Solution Architect):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[08:26] Wei Johnson (Product Manager):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[08:41] Amanda Taylor (Solution Architect):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[08:52] Carlos Thompson (Solution Engineer):
+Let's schedule a follow-up session specifically focused on the security and compliance architecture.
+
+[09:03] Wei Johnson (Product Manager):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[09:14] Amanda Taylor (Solution Architect):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[09:26] Amanda Taylor (Solution Architect):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[09:37] Wei Johnson (Product Manager):
+Nothing from my side. Appreciate everyone's time. Looking forward to the next steps.
+
+[09:43] Amanda Taylor (Solution Architect):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #018 - Cobalt Technologies (Retail)
+Date: 2026-02-11
+Duration: ~10 minutes
+Participants: 5
+Call Type: Requirements Gathering
+================================================================================
+
+[00:00] Amanda White (Product Manager):
+Good morning everyone, thanks for joining today's call. I'm Amanda White and I'll be facilitating our discussion on the Foundry IQ implementation for Cobalt Technologies.
+
+[00:12] Amanda White (Product Manager):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:21] David Clark (Technical Lead):
+Hi, David Clark here, Technical Lead. Happy to dive into the details today.
+
+[00:27] Amanda Patel (Customer Success Manager):
+Hey team, I'm Amanda Patel, serving as Customer Success Manager. Looking forward to a productive session.
+
+[00:35] Daniel White (Solution Architect):
+Hi everyone, Daniel White here. I'm the Solution Architect on this engagement. Excited to be part of this.
+
+[00:42] Sarah Davis (Solution Engineer):
+Hi, Sarah Davis here, Solution Engineer. Happy to dive into the details today.
+
+[00:47] Amanda White (Product Manager):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:57] Daniel White (Solution Architect):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[01:05] Amanda White (Product Manager):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:12] Amanda White (Product Manager):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:25] Daniel White (Solution Architect):
+We're losing $2M per quarter in markdowns because our demand forecasting is off by 20-30%. We're either overstocked or out of stock on key SKUs.
+
+[01:47] Sarah Davis (Solution Engineer):
+How long has this been a problem? And what have you tried so far to address it?
+
+[02:01] Amanda White (Product Manager):
+We estimate it's costing us roughly $1.5 million annually in lost productivity alone. And that doesn't account for the downstream effects on customer satisfaction.
+
+[02:19] David Clark (Technical Lead):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[02:32] Sarah Davis (Solution Engineer):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:43] David Clark (Technical Lead):
+Our pricing team is making decisions based on weekly reports. Competitors are adjusting prices hourly and we're always a step behind.
+
+[03:03] Amanda Patel (Customer Success Manager):
+Walk me through a specific example. What does that look like day-to-day for your team?
+
+[03:20] Sarah Davis (Solution Engineer):
+We estimate it's costing us roughly $1.5 million annually in lost productivity alone. And that doesn't account for the downstream effects on customer satisfaction.
+
+[03:40] David Clark (Technical Lead):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[03:54] Amanda White (Product Manager):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[04:08] Amanda White (Product Manager):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[04:19] Amanda Patel (Customer Success Manager):
+The platform must support what-if scenario modeling for promotional campaigns including cannibalization effects.
+
+[04:34] Sarah Davis (Solution Engineer):
+Good. Let me make sure I understand the acceptance criteria there. Are we talking about a binary pass/fail or are there graduated levels of compliance?
+
+[04:51] David Clark (Technical Lead):
+We need a unified product catalog that reconciles SKUs across all channels with support for product hierarchy and attribute management.
+
+[05:10] Amanda Patel (Customer Success Manager):
+Noted. I'll map that to the specific Foundry IQ modules we'll need to configure. That touches the ontology layer and possibly the Workshop application.
+
+[05:24] David Clark (Technical Lead):
+The platform must support customer identity resolution across online, mobile app, in-store, and loyalty program touchpoints.
+
+[05:46] Daniel White (Solution Architect):
+Noted. I'll map that to the specific Foundry IQ modules we'll need to configure. That touches the ontology layer and possibly the Workshop application.
+
+[06:00] Daniel White (Solution Architect):
+The system must generate automated replenishment recommendations based on real-time inventory levels, lead times, and forecasted demand.
+
+[06:17] Amanda Patel (Customer Success Manager):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[06:34] Amanda Patel (Customer Success Manager):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:45] Amanda Patel (Customer Success Manager):
+All PII must be handled in compliance with GDPR, CCPA, and applicable regional privacy regulations.
+
+[07:07] Amanda Patel (Customer Success Manager):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[07:24] David Clark (Technical Lead):
+The demand forecasting engine must process predictions for 500,000 SKUs across all locations within a 2-hour batch window.
+
+[07:46] Daniel White (Solution Architect):
+Noted. That's a hard constraint, not a nice-to-have. We'll design the architecture with that as a non-negotiable baseline.
+
+[08:03] Sarah Davis (Solution Engineer):
+The system must maintain data freshness of 15 minutes or less for inventory positions across all stores.
+
+[08:20] Sarah Davis (Solution Engineer):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[08:34] Daniel White (Solution Architect):
+Platform must support a Black Friday traffic spike of 20x normal volume without service degradation.
+
+[08:56] David Clark (Technical Lead):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[09:12] Amanda White (Product Manager):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[09:23] Sarah Davis (Solution Engineer):
+We need to finalize the data source inventory and get access credentials for the development environment.
+
+[09:35] Sarah Davis (Solution Engineer):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[09:45] David Clark (Technical Lead):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[09:55] Amanda White (Product Manager):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[10:08] Amanda White (Product Manager):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[10:18] Amanda Patel (Customer Success Manager):
+Just want to say this was a great discussion. I feel much more confident about the Foundry IQ approach now.
+
+[10:24] Amanda White (Product Manager):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #019 - Vertex Group (Manufacturing)
+Date: 2026-02-11
+Duration: ~12 minutes
+Participants: 5
+Call Type: Architecture Review
+================================================================================
+
+[00:00] Rachel Lee (Technical Lead):
+Good morning everyone, thanks for joining today's call. I'm Rachel Lee and I'll be facilitating our discussion on the Foundry IQ implementation for Vertex Group.
+
+[00:10] Rachel Lee (Technical Lead):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:17] Kevin Miller (Customer Success Manager):
+Hi everyone, Kevin Miller here. I'm the Customer Success Manager on this engagement. Excited to be part of this.
+
+[00:23] Chris Clark (Product Manager):
+Hi everyone, Chris Clark here. I'm the Product Manager on this engagement. Excited to be part of this.
+
+[00:29] David Chen (Solution Architect):
+Good morning. David Chen, Solution Architect. I've been working closely with the Vertex Group team on the pre-work for this.
+
+[00:36] Robert Rodriguez (Solution Engineer):
+Hi everyone, Robert Rodriguez here. I'm the Solution Engineer on this engagement. Excited to be part of this.
+
+[00:41] Rachel Lee (Technical Lead):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:52] Chris Clark (Product Manager):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[01:01] Rachel Lee (Technical Lead):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:06] David Chen (Solution Architect):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[01:20] Rachel Lee (Technical Lead):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[01:34] Kevin Miller (Customer Success Manager):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[01:54] Chris Clark (Product Manager):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[02:12] Rachel Lee (Technical Lead):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[02:27] Chris Clark (Product Manager):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[02:39] Rachel Lee (Technical Lead):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[02:54] David Chen (Solution Architect):
+Let's talk about environments. We'll need at least three - development, staging, and production. Foundry IQ supports project-level isolation which maps well to this.
+
+[03:11] Kevin Miller (Customer Success Manager):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[03:26] David Chen (Solution Architect):
+Can you elaborate on that? How does that compare to the approach we discussed in the pre-call?
+
+[03:41] Robert Rodriguez (Solution Engineer):
+On the predictive maintenance front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[03:59] Chris Clark (Product Manager):
+For the operational efficiency workflow specifically, I want to build a feedback loop where the model outputs are validated against actual outcomes and the model is retrained on a configurable schedule.
+
+[04:20] Kevin Miller (Customer Success Manager):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[04:32] Robert Rodriguez (Solution Engineer):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[04:47] Chris Clark (Product Manager):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[05:09] Rachel Lee (Technical Lead):
+The transformation layer is where the heavy lifting happens. We'll use Foundry IQ's Code Repositories to write and version-control all our data transformations. Everything runs as managed Spark jobs.
+
+[05:27] Kevin Miller (Customer Success Manager):
+Agreed. Let me add that to the architecture decision record so we have it documented.
+
+[05:43] Rachel Lee (Technical Lead):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[05:55] Rachel Lee (Technical Lead):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[06:07] Chris Clark (Product Manager):
+The system must provide automated root cause analysis that correlates quality defects with upstream process parameters within 30 seconds.
+
+[06:23] Chris Clark (Product Manager):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[06:38] Kevin Miller (Customer Success Manager):
+We need a production scheduling optimizer that accounts for equipment availability, material constraints, and order priorities.
+
+[06:53] David Chen (Solution Architect):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[07:09] Robert Rodriguez (Solution Engineer):
+The platform must support digital twin modeling for at least 200 pieces of critical equipment with real-time state synchronization.
+
+[07:31] Kevin Miller (Customer Success Manager):
+Makes sense. We should also think about how that requirement evolves over the next 12-18 months. Is that scope likely to expand?
+
+[07:46] David Chen (Solution Architect):
+Users must be able to define custom anomaly detection rules combining sensor thresholds, temporal patterns, and equipment context.
+
+[08:03] Chris Clark (Product Manager):
+I agree that's critical. We'll want to build automated tests around that requirement so we can validate it continuously as the platform evolves.
+
+[08:21] Robert Rodriguez (Solution Engineer):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[08:34] David Chen (Solution Architect):
+The platform must operate in air-gapped environments with no internet connectivity for classified production facilities.
+
+[08:55] David Chen (Solution Architect):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[09:11] Robert Rodriguez (Solution Engineer):
+System must support edge computing deployment for latency-sensitive use cases with eventual consistency to the central platform.
+
+[09:33] Kevin Miller (Customer Success Manager):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[09:47] Kevin Miller (Customer Success Manager):
+The platform must achieve 99.99% uptime for the real-time monitoring subsystem.
+
+[10:02] Robert Rodriguez (Solution Engineer):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[10:20] Robert Rodriguez (Solution Engineer):
+The system must retain raw sensor data for 90 days in hot storage and 5 years in cold storage with seamless query across tiers.
+
+[10:37] Chris Clark (Product Manager):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[10:50] Rachel Lee (Technical Lead):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[11:01] David Chen (Solution Architect):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[11:13] Chris Clark (Product Manager):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[11:25] Kevin Miller (Customer Success Manager):
+I'll circulate the updated architecture diagram and ontology mapping by end of week for everyone to review.
+
+[11:35] Rachel Lee (Technical Lead):
+Let's schedule a follow-up session specifically focused on the security and compliance architecture.
+
+[11:46] Rachel Lee (Technical Lead):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[11:58] Chris Clark (Product Manager):
+Nothing from my side. Appreciate everyone's time. Looking forward to the next steps.
+
+[12:08] Rachel Lee (Technical Lead):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+
+================================================================================
+CALL #020 - Meridian Health Systems (Technology)
+Date: 2026-02-11
+Duration: ~15 minutes
+Participants: 5
+Call Type: Mixed
+================================================================================
+
+[00:00] Priya Johnson (Solution Engineer):
+Good morning everyone, thanks for joining today's call. I'm Priya Johnson and I'll be facilitating our discussion on the Foundry IQ implementation for Meridian Health Systems.
+
+[00:10] Priya Johnson (Solution Engineer):
+Before we jump in, let me do a quick round of introductions so everyone knows who's on the line.
+
+[00:18] Kevin Clark (Data Engineer):
+Good morning. Kevin Clark, Data Engineer. I've been working closely with the Meridian Health Systems team on the pre-work for this.
+
+[00:24] Emily Williams (Technical Lead):
+Hi, Emily Williams here, Technical Lead. Happy to dive into the details today.
+
+[00:32] Rachel Thompson (Customer Success Manager):
+Good morning. Rachel Thompson, Customer Success Manager. I've been working closely with the Meridian Health Systems team on the pre-work for this.
+
+[00:37] Robert Davis (Solution Architect):
+Good morning. Robert Davis, Solution Architect. I've been working closely with the Meridian Health Systems team on the pre-work for this.
+
+[00:43] Priya Johnson (Solution Engineer):
+Great. So for today's agenda, I'd like to cover the current challenges you're facing, walk through the Foundry IQ solution approach, and then discuss implementation specifics. Sound good?
+
+[00:52] Rachel Thompson (Customer Success Manager):
+Sounds good. I'd also like to make sure we carve out time toward the end to talk about requirements and success criteria.
+
+[01:00] Priya Johnson (Solution Engineer):
+Absolutely, we'll make sure we get to that. Let's get started.
+
+[01:05] Priya Johnson (Solution Engineer):
+Let's start by getting a clear picture of the current pain points. Can someone walk us through the biggest challenges you're facing today?
+
+[01:15] Robert Davis (Solution Architect):
+Developer onboarding for our data platform takes 3 weeks. The tooling is so complex that engineers spend more time fighting infrastructure than writing analytics logic.
+
+[01:37] Priya Johnson (Solution Engineer):
+Can you quantify the business impact of that? Like, what does that translate to in terms of revenue or operational cost?
+
+[01:49] Robert Davis (Solution Architect):
+We're using a mix of custom scripts, some legacy ETL tools, and honestly a lot of Excel. It's not sustainable and everyone knows it.
+
+[02:08] Kevin Clark (Data Engineer):
+So one of the things Foundry IQ does really well is handle that data fragmentation problem. The platform's designed to bring together heterogeneous data sources into a coherent model.
+
+[02:22] Robert Davis (Solution Architect):
+That makes sense. What about the other challenges? I know we had a few more items on the list.
+
+[02:31] Emily Williams (Technical Lead):
+We've got 15 different microservices each with their own data store and there's no way to answer cross-service business questions without a week-long data engineering project.
+
+[02:48] Kevin Clark (Data Engineer):
+Walk me through a specific example. What does that look like day-to-day for your team?
+
+[03:03] Priya Johnson (Solution Engineer):
+It's been building for about 18 months. We did a POC with another vendor last year but it didn't scale past the pilot phase. That's why we're looking at Foundry IQ now.
+
+[03:20] Robert Davis (Solution Architect):
+That's helpful context. From a Foundry IQ perspective, we'd approach this by first building a comprehensive ontology that maps all those data relationships.
+
+[03:35] Priya Johnson (Solution Engineer):
+Alright, let's shift gears and talk about requirements. I want to make sure we capture both the functional needs - what the system must do - and the non-functional requirements around performance, security, and reliability.
+
+[03:48] Priya Johnson (Solution Engineer):
+Let's start with functional requirements. What are the must-have capabilities for Phase 1?
+
+[03:59] Kevin Clark (Data Engineer):
+The system must support real-time event streaming with exactly-once semantics for product analytics events.
+
+[04:19] Rachel Thompson (Customer Success Manager):
+I agree that's critical. We'll want to build automated tests around that requirement so we can validate it continuously as the platform evolves.
+
+[04:34] Rachel Thompson (Customer Success Manager):
+The platform must provide a self-service query interface where product managers can explore data without writing SQL.
+
+[04:49] Emily Williams (Technical Lead):
+Got it. I want to flag that one as high priority. Can we put a hard requirement around that in the design document?
+
+[05:01] Kevin Clark (Data Engineer):
+We need automated feature flag integration that correlates experiment assignments with behavioral outcomes across the full conversion funnel.
+
+[05:16] Priya Johnson (Solution Engineer):
+That's clear. From an implementation standpoint, Foundry IQ can support that through the Pipeline Builder. We'd configure the data flows to match those specifications.
+
+[05:30] Robert Davis (Solution Architect):
+The platform must provide a unified semantic layer that abstracts across all 15 microservice data stores.
+
+[05:46] Emily Williams (Technical Lead):
+Noted. I'll map that to the specific Foundry IQ modules we'll need to configure. That touches the ontology layer and possibly the Workshop application.
+
+[06:02] Robert Davis (Solution Architect):
+Good, those functional requirements are solid. Now let's talk about the non-functional side. Performance, scalability, security - what are the hard constraints?
+
+[06:13] Rachel Thompson (Customer Success Manager):
+The system must support blue-green deployments with zero-downtime upgrades.
+
+[06:30] Kevin Clark (Data Engineer):
+That aligns with what I've seen in similar deployments. We should plan for capacity testing early in the implementation timeline.
+
+[06:46] Kevin Clark (Data Engineer):
+The platform must support at least 200 concurrent analytical users without query queueing.
+
+[07:01] Emily Williams (Technical Lead):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[07:14] Emily Williams (Technical Lead):
+Event ingestion must handle 500,000 events per second at peak with less than 100ms end-to-end latency.
+
+[07:31] Kevin Clark (Data Engineer):
+Critical requirement. I'll make sure we build monitoring dashboards in Foundry IQ that track this metric continuously so we can catch any degradation early.
+
+[07:49] Rachel Thompson (Customer Success Manager):
+Data encryption must be enforced at rest and in transit with customer-managed encryption keys for enterprise tenants.
+
+[08:10] Priya Johnson (Solution Engineer):
+Understood. Foundry IQ's architecture is designed to meet that kind of SLA. We'll document the specific configuration needed to achieve it.
+
+[08:23] Rachel Thompson (Customer Success Manager):
+We should discuss the build pipeline. I'm thinking we use incremental builds wherever possible to keep compute costs down. Foundry IQ's build scheduler is quite sophisticated for dependency management.
+
+[08:38] Kevin Clark (Data Engineer):
+That makes sense. One question though - how does that handle the edge case where we have conflicting data from two different sources?
+
+[08:51] Kevin Clark (Data Engineer):
+For the Quiver analytics layer, we should pre-compute the most common aggregations. This gives us sub-second query performance for the dashboards that get the most traffic.
+
+[09:05] Emily Williams (Technical Lead):
+We also need to plan for data lifecycle management. Not everything needs to live in hot storage forever. Foundry IQ supports tiered storage policies.
+
+[09:20] Kevin Clark (Data Engineer):
+Let's talk about monitoring and observability. We need to instrument the pipelines so we know immediately when data quality drops or a pipeline fails.
+
+[09:42] Emily Williams (Technical Lead):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[09:57] Priya Johnson (Solution Engineer):
+For the ingestion layer, we'll set up connectors to all your source systems. Foundry IQ supports both batch and streaming ingestion, so we can configure each source based on its latency requirements.
+
+[10:17] Rachel Thompson (Customer Success Manager):
+Security architecture is critical here. I'm proposing we implement project-level RBAC, field-level access controls on the ontology, and network-level isolation for the production environment.
+
+[10:36] Kevin Clark (Data Engineer):
+Quick question on that - does Foundry IQ support that natively or would we need to build a custom extension?
+
+[10:51] Robert Davis (Solution Architect):
+For the application layer, I'm recommending we use Workshop to build the operational interfaces. It gives us the flexibility to create custom workflows without a full frontend development cycle.
+
+[11:11] Priya Johnson (Solution Engineer):
+Let's talk about the architecture for system monitoring. I'm proposing a three-tier approach within Foundry IQ: raw ingestion layer, a transformation layer, and then the ontology-backed application layer.
+
+[11:32] Emily Williams (Technical Lead):
+On the API performance front, we need to implement data classification at the ontology level. Foundry IQ has a tagging system that lets us mark sensitive fields and automatically enforce access policies.
+
+[11:54] Robert Davis (Solution Architect):
+One thing I want to flag is the importance of getting the ontology right. In my experience, about 60% of implementation issues trace back to an ontology that doesn't accurately represent the business domain.
+
+[12:12] Rachel Thompson (Customer Success Manager):
+I like that approach. Have you seen that pattern work at this scale before?
+
+[12:27] Kevin Clark (Data Engineer):
+For the CI/CD pipeline, I'm recommending we use Foundry IQ's Checks framework to run automated data quality validations on every build before promoting to production.
+
+[12:41] Rachel Thompson (Customer Success Manager):
+Good point. We should validate that assumption during the POC phase before committing to it for the full rollout.
+
+[12:57] Rachel Thompson (Customer Success Manager):
+What about the API layer? We'll need external systems to both push data in and pull insights out. The Foundry IQ API supports both REST and GraphQL patterns.
+
+[13:19] Kevin Clark (Data Engineer):
+One architecture decision we need to make is whether to use Foundry IQ's native compute or bring our own Kubernetes cluster. There are trade-offs either way.
+
+[13:35] Rachel Thompson (Customer Success Manager):
+I'm recommending we implement a medallion architecture - bronze for raw data, silver for cleaned and conformed data, and gold for business-ready aggregations and ontology objects.
+
+[13:57] Priya Johnson (Solution Engineer):
+We're getting close to time, so let me try to summarize the key takeaways and action items.
+
+[14:09] Robert Davis (Solution Architect):
+Let's schedule a follow-up session specifically focused on the security and compliance architecture.
+
+[14:23] Priya Johnson (Solution Engineer):
+I'll draft the requirements document based on today's discussion and send it out for review by Thursday.
+
+[14:37] Kevin Clark (Data Engineer):
+I'll set up the Foundry IQ development environment so the team can start hands-on exploration.
+
+[14:51] Kevin Clark (Data Engineer):
+We should loop in the infrastructure team for the next call to discuss compute provisioning and network configuration.
+
+[15:04] Priya Johnson (Solution Engineer):
+Great. I'll send out meeting notes and the follow-up calendar invite today. Any final questions before we wrap?
+
+[15:15] Emily Williams (Technical Lead):
+Just want to say this was a great discussion. I feel much more confident about the Foundry IQ approach now.
+
+[15:22] Priya Johnson (Solution Engineer):
+Thanks everyone. Talk to you next week. Have a great rest of your day.
+
+
+

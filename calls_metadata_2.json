@@ -1,0 +1,700 @@
+[
+  {
+    "call_id": 1,
+    "company": "Quantum Systems",
+    "vertical": "Healthcare",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Amanda Rodriguez (Data Engineer)",
+      "Jennifer Chen (Solution Engineer)",
+      "Kevin Nakamura (Technical Lead)",
+      "James White (Customer Success Manager)"
+    ],
+    "duration_seconds": 578,
+    "duration_minutes": 9.6
+  },
+  {
+    "call_id": 2,
+    "company": "Horizon Enterprises",
+    "vertical": "Financial Services",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Tom Harris (Data Engineer)",
+      "Chris Martinez (Technical Lead)",
+      "Robert Garcia (Solution Architect)"
+    ],
+    "duration_seconds": 607,
+    "duration_minutes": 10.1
+  },
+  {
+    "call_id": 3,
+    "company": "Sterling Manufacturing",
+    "vertical": "Retail",
+    "call_type": "architecture_review",
+    "participants": [
+      "Wei Thompson (Data Engineer)",
+      "Matthew Anderson (Technical Lead)",
+      "James Clark (Customer Success Manager)"
+    ],
+    "duration_seconds": 749,
+    "duration_minutes": 12.5
+  },
+  {
+    "call_id": 4,
+    "company": "Fusion Analytics",
+    "vertical": "Manufacturing",
+    "call_type": "mixed",
+    "participants": [
+      "Brian Martinez (Technical Lead)",
+      "Daniel Garcia (Customer Success Manager)",
+      "Lisa Jones (Solution Engineer)"
+    ],
+    "duration_seconds": 1013,
+    "duration_minutes": 16.9
+  },
+  {
+    "call_id": 5,
+    "company": "CloudScale",
+    "vertical": "Technology",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Michelle Moore (Product Manager)",
+      "Matthew Thompson (Solution Architect)",
+      "Nicole Taylor (Customer Success Manager)",
+      "Nicole Martin (Data Engineer)",
+      "James Lee (Solution Engineer)"
+    ],
+    "duration_seconds": 577,
+    "duration_minutes": 9.6
+  },
+  {
+    "call_id": 6,
+    "company": "Summit Technologies",
+    "vertical": "Healthcare",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Chris Martinez (Customer Success Manager)",
+      "Michelle Brown (Product Manager)",
+      "Tom Anderson (Solution Engineer)",
+      "Rachel Taylor (Data Engineer)"
+    ],
+    "duration_seconds": 599,
+    "duration_minutes": 10.0
+  },
+  {
+    "call_id": 7,
+    "company": "Innovate Solutions",
+    "vertical": "Financial Services",
+    "call_type": "architecture_review",
+    "participants": [
+      "Wei Clark (Technical Lead)",
+      "Aisha Anderson (Product Manager)",
+      "Carlos Moore (Customer Success Manager)",
+      "Lisa White (Data Engineer)"
+    ],
+    "duration_seconds": 761,
+    "duration_minutes": 12.7
+  },
+  {
+    "call_id": 8,
+    "company": "Atlas Financial Group",
+    "vertical": "Retail",
+    "call_type": "mixed",
+    "participants": [
+      "Rachel Jackson (Solution Architect)",
+      "Priya Clark (Customer Success Manager)",
+      "Rachel Jones (Data Engineer)",
+      "Rachel Rodriguez (Technical Lead)",
+      "David Williams (Solution Engineer)"
+    ],
+    "duration_seconds": 967,
+    "duration_minutes": 16.1
+  },
+  {
+    "call_id": 9,
+    "company": "DataFirst",
+    "vertical": "Manufacturing",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Jessica Martinez (Solution Engineer)",
+      "Tom Martinez (Customer Success Manager)",
+      "Michelle Johnson (Product Manager)"
+    ],
+    "duration_seconds": 611,
+    "duration_minutes": 10.2
+  },
+  {
+    "call_id": 10,
+    "company": "Pioneer Tech",
+    "vertical": "Technology",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Emily Miller (Customer Success Manager)",
+      "Priya Brown (Solution Engineer)",
+      "Jennifer Garcia (Data Engineer)",
+      "Kevin Patel (Product Manager)",
+      "Daniel Martin (Solution Architect)"
+    ],
+    "duration_seconds": 607,
+    "duration_minutes": 10.1
+  },
+  {
+    "call_id": 11,
+    "company": "Vertex Group",
+    "vertical": "Healthcare",
+    "call_type": "architecture_review",
+    "participants": [
+      "Carlos Johnson (Customer Success Manager)",
+      "Chris Chen (Solution Architect)",
+      "James Thompson (Data Engineer)",
+      "Aisha Brown (Product Manager)"
+    ],
+    "duration_seconds": 790,
+    "duration_minutes": 13.2
+  },
+  {
+    "call_id": 12,
+    "company": "Fusion Analytics",
+    "vertical": "Financial Services",
+    "call_type": "mixed",
+    "participants": [
+      "Jessica White (Product Manager)",
+      "David Anderson (Solution Architect)",
+      "Emily Clark (Data Engineer)",
+      "Chris Davis (Customer Success Manager)",
+      "Tom Chen (Solution Engineer)"
+    ],
+    "duration_seconds": 1004,
+    "duration_minutes": 16.7
+  },
+  {
+    "call_id": 13,
+    "company": "DataFirst",
+    "vertical": "Retail",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Carlos Clark (Solution Architect)",
+      "Wei Brown (Product Manager)",
+      "Michael Nakamura (Technical Lead)",
+      "Tom White (Data Engineer)"
+    ],
+    "duration_seconds": 648,
+    "duration_minutes": 10.8
+  },
+  {
+    "call_id": 14,
+    "company": "Pinnacle Retail",
+    "vertical": "Manufacturing",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Jessica Martin (Customer Success Manager)",
+      "Jennifer Taylor (Solution Architect)",
+      "Chris Williams (Product Manager)",
+      "Carlos Jones (Solution Engineer)",
+      "Michelle Rodriguez (Data Engineer)"
+    ],
+    "duration_seconds": 591,
+    "duration_minutes": 9.8
+  },
+  {
+    "call_id": 15,
+    "company": "Velocity Group",
+    "vertical": "Technology",
+    "call_type": "architecture_review",
+    "participants": [
+      "Chris Jackson (Solution Engineer)",
+      "Carlos Davis (Product Manager)",
+      "Wei Clark (Technical Lead)",
+      "Wei Okonkwo (Solution Architect)",
+      "Priya White (Data Engineer)"
+    ],
+    "duration_seconds": 756,
+    "duration_minutes": 12.6
+  },
+  {
+    "call_id": 16,
+    "company": "Acme Corp",
+    "vertical": "Healthcare",
+    "call_type": "mixed",
+    "participants": [
+      "Nicole Thompson (Data Engineer)",
+      "Lisa Davis (Solution Architect)",
+      "Brian Garcia (Solution Engineer)",
+      "Daniel Miller (Technical Lead)",
+      "Priya Davis (Customer Success Manager)"
+    ],
+    "duration_seconds": 940,
+    "duration_minutes": 15.7
+  },
+  {
+    "call_id": 17,
+    "company": "Pioneer Tech",
+    "vertical": "Financial Services",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Chris Rodriguez (Solution Architect)",
+      "Ashley Okonkwo (Customer Success Manager)",
+      "Brian Moore (Product Manager)",
+      "Carlos Patel (Solution Engineer)"
+    ],
+    "duration_seconds": 678,
+    "duration_minutes": 11.3
+  },
+  {
+    "call_id": 18,
+    "company": "Pioneer Tech",
+    "vertical": "Retail",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Brian Harris (Solution Engineer)",
+      "Sarah Thompson (Data Engineer)",
+      "Carlos Miller (Solution Architect)"
+    ],
+    "duration_seconds": 577,
+    "duration_minutes": 9.6
+  },
+  {
+    "call_id": 19,
+    "company": "Sterling Manufacturing",
+    "vertical": "Manufacturing",
+    "call_type": "architecture_review",
+    "participants": [
+      "Matthew Taylor (Technical Lead)",
+      "Michelle Nakamura (Data Engineer)",
+      "Tom Clark (Customer Success Manager)"
+    ],
+    "duration_seconds": 881,
+    "duration_minutes": 14.7
+  },
+  {
+    "call_id": 20,
+    "company": "CloudScale",
+    "vertical": "Technology",
+    "call_type": "mixed",
+    "participants": [
+      "Carlos Harris (Customer Success Manager)",
+      "Jennifer Moore (Data Engineer)",
+      "Lisa Lee (Product Manager)",
+      "Aisha Thompson (Solution Architect)"
+    ],
+    "duration_seconds": 930,
+    "duration_minutes": 15.5
+  },
+  {
+    "call_id": 21,
+    "company": "Apex Solutions",
+    "vertical": "Healthcare",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Sarah Harris (Solution Engineer)",
+      "Amanda Patel (Customer Success Manager)",
+      "Ashley Nakamura (Product Manager)"
+    ],
+    "duration_seconds": 625,
+    "duration_minutes": 10.4
+  },
+  {
+    "call_id": 22,
+    "company": "Summit Technologies",
+    "vertical": "Financial Services",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Matthew Harris (Product Manager)",
+      "Kevin Harris (Data Engineer)",
+      "Nicole Martin (Solution Engineer)",
+      "David Johnson (Solution Architect)"
+    ],
+    "duration_seconds": 603,
+    "duration_minutes": 10.1
+  },
+  {
+    "call_id": 23,
+    "company": "Horizon Enterprises",
+    "vertical": "Retail",
+    "call_type": "architecture_review",
+    "participants": [
+      "Aisha Thomas (Data Engineer)",
+      "Carlos Johnson (Customer Success Manager)",
+      "Michael Harris (Product Manager)",
+      "Wei Davis (Solution Engineer)"
+    ],
+    "duration_seconds": 772,
+    "duration_minutes": 12.9
+  },
+  {
+    "call_id": 24,
+    "company": "Velocity Group",
+    "vertical": "Manufacturing",
+    "call_type": "mixed",
+    "participants": [
+      "Wei Brown (Solution Architect)",
+      "Amanda Davis (Data Engineer)",
+      "Aisha Jones (Customer Success Manager)",
+      "Tom Garcia (Product Manager)",
+      "Sarah Davis (Technical Lead)"
+    ],
+    "duration_seconds": 948,
+    "duration_minutes": 15.8
+  },
+  {
+    "call_id": 25,
+    "company": "Pinnacle Retail",
+    "vertical": "Technology",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Aisha Jackson (Data Engineer)",
+      "Tom Miller (Solution Architect)",
+      "Lisa Chen (Solution Engineer)"
+    ],
+    "duration_seconds": 624,
+    "duration_minutes": 10.4
+  },
+  {
+    "call_id": 26,
+    "company": "TechVenture Inc",
+    "vertical": "Healthcare",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Aisha Harris (Solution Engineer)",
+      "Kevin Chen (Product Manager)",
+      "Brian Taylor (Solution Architect)",
+      "Brian Anderson (Technical Lead)"
+    ],
+    "duration_seconds": 621,
+    "duration_minutes": 10.3
+  },
+  {
+    "call_id": 27,
+    "company": "Horizon Enterprises",
+    "vertical": "Financial Services",
+    "call_type": "architecture_review",
+    "participants": [
+      "Jessica Chen (Solution Engineer)",
+      "Robert Lee (Technical Lead)",
+      "Rachel Brown (Solution Architect)",
+      "Brian Nakamura (Customer Success Manager)"
+    ],
+    "duration_seconds": 726,
+    "duration_minutes": 12.1
+  },
+  {
+    "call_id": 28,
+    "company": "Sterling Manufacturing",
+    "vertical": "Retail",
+    "call_type": "mixed",
+    "participants": [
+      "Chris Patel (Solution Engineer)",
+      "Rachel Thompson (Product Manager)",
+      "Daniel Moore (Technical Lead)"
+    ],
+    "duration_seconds": 999,
+    "duration_minutes": 16.6
+  },
+  {
+    "call_id": 29,
+    "company": "Innovate Solutions",
+    "vertical": "Manufacturing",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Lisa Martinez (Technical Lead)",
+      "Jennifer Davis (Customer Success Manager)",
+      "Daniel Clark (Solution Architect)"
+    ],
+    "duration_seconds": 635,
+    "duration_minutes": 10.6
+  },
+  {
+    "call_id": 30,
+    "company": "Pioneer Tech",
+    "vertical": "Technology",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Jessica Davis (Solution Architect)",
+      "James Williams (Solution Engineer)",
+      "Jennifer Brown (Customer Success Manager)",
+      "Priya Anderson (Technical Lead)"
+    ],
+    "duration_seconds": 597,
+    "duration_minutes": 9.9
+  },
+  {
+    "call_id": 31,
+    "company": "Acme Corp",
+    "vertical": "Healthcare",
+    "call_type": "architecture_review",
+    "participants": [
+      "Daniel Rodriguez (Solution Architect)",
+      "Amanda Taylor (Customer Success Manager)",
+      "Wei Martin (Data Engineer)"
+    ],
+    "duration_seconds": 813,
+    "duration_minutes": 13.6
+  },
+  {
+    "call_id": 32,
+    "company": "Pioneer Tech",
+    "vertical": "Financial Services",
+    "call_type": "mixed",
+    "participants": [
+      "James Anderson (Product Manager)",
+      "Robert Jackson (Solution Engineer)",
+      "Ashley Martin (Customer Success Manager)",
+      "Amanda Garcia (Solution Architect)",
+      "David Anderson (Technical Lead)"
+    ],
+    "duration_seconds": 971,
+    "duration_minutes": 16.2
+  },
+  {
+    "call_id": 33,
+    "company": "Cobalt Technologies",
+    "vertical": "Retail",
+    "call_type": "problem_discovery",
+    "participants": [
+      "James Garcia (Product Manager)",
+      "Tom Thompson (Customer Success Manager)",
+      "Jessica Miller (Technical Lead)",
+      "Jessica Thomas (Data Engineer)",
+      "James Okonkwo (Solution Engineer)"
+    ],
+    "duration_seconds": 589,
+    "duration_minutes": 9.8
+  },
+  {
+    "call_id": 34,
+    "company": "Apex Solutions",
+    "vertical": "Manufacturing",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Lisa Chen (Data Engineer)",
+      "Kevin Harris (Solution Engineer)",
+      "Emily Clark (Product Manager)",
+      "Daniel Clark (Solution Architect)",
+      "Matthew Clark (Customer Success Manager)"
+    ],
+    "duration_seconds": 633,
+    "duration_minutes": 10.6
+  },
+  {
+    "call_id": 35,
+    "company": "Apex Solutions",
+    "vertical": "Technology",
+    "call_type": "architecture_review",
+    "participants": [
+      "Brian Miller (Product Manager)",
+      "Brian Brown (Solution Architect)",
+      "Ashley Taylor (Data Engineer)"
+    ],
+    "duration_seconds": 791,
+    "duration_minutes": 13.2
+  },
+  {
+    "call_id": 36,
+    "company": "Quantum Systems",
+    "vertical": "Healthcare",
+    "call_type": "mixed",
+    "participants": [
+      "James Brown (Solution Engineer)",
+      "Michelle Anderson (Product Manager)",
+      "Carlos Williams (Technical Lead)"
+    ],
+    "duration_seconds": 938,
+    "duration_minutes": 15.6
+  },
+  {
+    "call_id": 37,
+    "company": "Pioneer Tech",
+    "vertical": "Financial Services",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Amanda Martin (Data Engineer)",
+      "Brian Miller (Customer Success Manager)",
+      "Amanda Lee (Solution Engineer)"
+    ],
+    "duration_seconds": 586,
+    "duration_minutes": 9.8
+  },
+  {
+    "call_id": 38,
+    "company": "Fusion Analytics",
+    "vertical": "Retail",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Chris Williams (Product Manager)",
+      "Kevin Chen (Customer Success Manager)",
+      "Emily Johnson (Solution Architect)",
+      "Carlos Taylor (Data Engineer)"
+    ],
+    "duration_seconds": 603,
+    "duration_minutes": 10.1
+  },
+  {
+    "call_id": 39,
+    "company": "Summit Technologies",
+    "vertical": "Manufacturing",
+    "call_type": "architecture_review",
+    "participants": [
+      "Brian Jackson (Product Manager)",
+      "Daniel Johnson (Data Engineer)",
+      "Brian Jackson (Customer Success Manager)",
+      "Michael Chen (Solution Engineer)",
+      "Michelle Harris (Solution Architect)"
+    ],
+    "duration_seconds": 710,
+    "duration_minutes": 11.8
+  },
+  {
+    "call_id": 40,
+    "company": "Vertex Group",
+    "vertical": "Technology",
+    "call_type": "mixed",
+    "participants": [
+      "Rachel Moore (Technical Lead)",
+      "Nicole Brown (Solution Engineer)",
+      "Robert Rodriguez (Product Manager)",
+      "Lisa Harris (Solution Architect)",
+      "Ashley White (Data Engineer)"
+    ],
+    "duration_seconds": 1013,
+    "duration_minutes": 16.9
+  },
+  {
+    "call_id": 41,
+    "company": "NextGen Systems",
+    "vertical": "Healthcare",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Matthew Patel (Customer Success Manager)",
+      "Kevin Clark (Product Manager)",
+      "Lisa Miller (Solution Architect)",
+      "Jennifer Davis (Data Engineer)"
+    ],
+    "duration_seconds": 697,
+    "duration_minutes": 11.6
+  },
+  {
+    "call_id": 42,
+    "company": "Apex Solutions",
+    "vertical": "Financial Services",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "David Jones (Solution Engineer)",
+      "Aisha Williams (Technical Lead)",
+      "Ashley Thomas (Solution Architect)",
+      "Aisha White (Product Manager)"
+    ],
+    "duration_seconds": 603,
+    "duration_minutes": 10.1
+  },
+  {
+    "call_id": 43,
+    "company": "Atlas Financial Group",
+    "vertical": "Retail",
+    "call_type": "architecture_review",
+    "participants": [
+      "Kevin Thompson (Data Engineer)",
+      "Aisha Brown (Customer Success Manager)",
+      "Priya Thompson (Solution Architect)",
+      "Robert Thomas (Technical Lead)",
+      "Priya Moore (Product Manager)"
+    ],
+    "duration_seconds": 712,
+    "duration_minutes": 11.9
+  },
+  {
+    "call_id": 44,
+    "company": "Sterling Manufacturing",
+    "vertical": "Manufacturing",
+    "call_type": "mixed",
+    "participants": [
+      "Aisha Jackson (Customer Success Manager)",
+      "Rachel Chen (Solution Architect)",
+      "Matthew Jackson (Product Manager)",
+      "Carlos Brown (Solution Engineer)"
+    ],
+    "duration_seconds": 968,
+    "duration_minutes": 16.1
+  },
+  {
+    "call_id": 45,
+    "company": "Horizon Enterprises",
+    "vertical": "Technology",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Matthew Williams (Solution Engineer)",
+      "Matthew Martin (Data Engineer)",
+      "Aisha Martin (Product Manager)",
+      "Michelle Jones (Technical Lead)"
+    ],
+    "duration_seconds": 615,
+    "duration_minutes": 10.2
+  },
+  {
+    "call_id": 46,
+    "company": "CloudScale",
+    "vertical": "Healthcare",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Carlos Clark (Data Engineer)",
+      "Wei Thomas (Solution Architect)",
+      "Carlos Harris (Product Manager)"
+    ],
+    "duration_seconds": 596,
+    "duration_minutes": 9.9
+  },
+  {
+    "call_id": 47,
+    "company": "NextGen Systems",
+    "vertical": "Financial Services",
+    "call_type": "architecture_review",
+    "participants": [
+      "Michelle Rodriguez (Data Engineer)",
+      "Sarah Lee (Product Manager)",
+      "Robert Rodriguez (Customer Success Manager)",
+      "Michael Rodriguez (Solution Architect)"
+    ],
+    "duration_seconds": 811,
+    "duration_minutes": 13.5
+  },
+  {
+    "call_id": 48,
+    "company": "Vertex Group",
+    "vertical": "Retail",
+    "call_type": "mixed",
+    "participants": [
+      "Aisha Taylor (Solution Architect)",
+      "Sarah Rodriguez (Product Manager)",
+      "Nicole Martinez (Technical Lead)",
+      "Tom Jackson (Solution Engineer)"
+    ],
+    "duration_seconds": 1075,
+    "duration_minutes": 17.9
+  },
+  {
+    "call_id": 49,
+    "company": "NextGen Systems",
+    "vertical": "Manufacturing",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Robert Thompson (Data Engineer)",
+      "Wei Chen (Product Manager)",
+      "Chris Thompson (Customer Success Manager)",
+      "Sarah Thompson (Solution Architect)"
+    ],
+    "duration_seconds": 609,
+    "duration_minutes": 10.2
+  },
+  {
+    "call_id": 50,
+    "company": "Global Industries",
+    "vertical": "Technology",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Carlos Davis (Data Engineer)",
+      "Michelle Thomas (Technical Lead)",
+      "Robert Jackson (Product Manager)"
+    ],
+    "duration_seconds": 600,
+    "duration_minutes": 10.0
+  }
+]

@@ -1,0 +1,286 @@
+[
+  {
+    "call_id": 1,
+    "company": "Pioneer Tech",
+    "vertical": "Healthcare",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Priya White (Data Engineer)",
+      "Michael Jones (Customer Success Manager)",
+      "Wei Jones (Solution Engineer)",
+      "Amanda Nakamura (Product Manager)",
+      "Daniel Thompson (Solution Architect)"
+    ],
+    "duration_seconds": 629,
+    "duration_minutes": 10.5
+  },
+  {
+    "call_id": 2,
+    "company": "Catalyst Corp",
+    "vertical": "Financial Services",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Brian Anderson (Solution Architect)",
+      "Michelle Miller (Product Manager)",
+      "Wei Martinez (Data Engineer)",
+      "Robert Martinez (Technical Lead)",
+      "Jennifer Thompson (Solution Engineer)"
+    ],
+    "duration_seconds": 595,
+    "duration_minutes": 9.9
+  },
+  {
+    "call_id": 3,
+    "company": "Cobalt Technologies",
+    "vertical": "Retail",
+    "call_type": "architecture_review",
+    "participants": [
+      "Jessica Brown (Technical Lead)",
+      "Jennifer Martinez (Product Manager)",
+      "Jessica Anderson (Solution Architect)"
+    ],
+    "duration_seconds": 791,
+    "duration_minutes": 13.2
+  },
+  {
+    "call_id": 4,
+    "company": "Fusion Analytics",
+    "vertical": "Manufacturing",
+    "call_type": "mixed",
+    "participants": [
+      "Michael Anderson (Product Manager)",
+      "Aisha Clark (Solution Engineer)",
+      "Sarah Lee (Solution Architect)",
+      "Wei Lee (Technical Lead)"
+    ],
+    "duration_seconds": 930,
+    "duration_minutes": 15.5
+  },
+  {
+    "call_id": 5,
+    "company": "Vertex Group",
+    "vertical": "Technology",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Daniel Miller (Technical Lead)",
+      "Carlos Anderson (Solution Engineer)",
+      "David Anderson (Solution Architect)",
+      "Jennifer Nakamura (Product Manager)",
+      "Kevin Williams (Customer Success Manager)"
+    ],
+    "duration_seconds": 595,
+    "duration_minutes": 9.9
+  },
+  {
+    "call_id": 6,
+    "company": "Pioneer Tech",
+    "vertical": "Healthcare",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Kevin Patel (Solution Architect)",
+      "Lisa Martinez (Solution Engineer)",
+      "Daniel Okonkwo (Customer Success Manager)",
+      "Daniel Okonkwo (Product Manager)"
+    ],
+    "duration_seconds": 603,
+    "duration_minutes": 10.1
+  },
+  {
+    "call_id": 7,
+    "company": "Pinnacle Retail",
+    "vertical": "Financial Services",
+    "call_type": "architecture_review",
+    "participants": [
+      "Emily Martin (Data Engineer)",
+      "Kevin Taylor (Technical Lead)",
+      "Jennifer Jones (Solution Engineer)",
+      "Robert Rodriguez (Customer Success Manager)",
+      "James Lee (Product Manager)"
+    ],
+    "duration_seconds": 754,
+    "duration_minutes": 12.6
+  },
+  {
+    "call_id": 8,
+    "company": "Innovate Solutions",
+    "vertical": "Retail",
+    "call_type": "mixed",
+    "participants": [
+      "Brian Clark (Customer Success Manager)",
+      "Jessica Miller (Data Engineer)",
+      "Sarah Moore (Technical Lead)",
+      "Tom Martinez (Solution Engineer)",
+      "David Williams (Product Manager)"
+    ],
+    "duration_seconds": 955,
+    "duration_minutes": 15.9
+  },
+  {
+    "call_id": 9,
+    "company": "NextGen Systems",
+    "vertical": "Manufacturing",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Amanda Jones (Data Engineer)",
+      "Rachel Jackson (Customer Success Manager)",
+      "Kevin Garcia (Solution Engineer)"
+    ],
+    "duration_seconds": 660,
+    "duration_minutes": 11.0
+  },
+  {
+    "call_id": 10,
+    "company": "Global Industries",
+    "vertical": "Technology",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Tom Jones (Data Engineer)",
+      "Daniel Harris (Technical Lead)",
+      "Emily Patel (Solution Engineer)"
+    ],
+    "duration_seconds": 585,
+    "duration_minutes": 9.8
+  },
+  {
+    "call_id": 11,
+    "company": "Cobalt Technologies",
+    "vertical": "Healthcare",
+    "call_type": "architecture_review",
+    "participants": [
+      "Aisha Nakamura (Product Manager)",
+      "Jessica Harris (Data Engineer)",
+      "Emily Thompson (Technical Lead)",
+      "Brian Taylor (Customer Success Manager)",
+      "Sarah Garcia (Solution Architect)"
+    ],
+    "duration_seconds": 795,
+    "duration_minutes": 13.2
+  },
+  {
+    "call_id": 12,
+    "company": "Acme Corp",
+    "vertical": "Financial Services",
+    "call_type": "mixed",
+    "participants": [
+      "Daniel Brown (Solution Engineer)",
+      "Lisa Anderson (Product Manager)",
+      "Ashley Taylor (Data Engineer)",
+      "James White (Customer Success Manager)"
+    ],
+    "duration_seconds": 923,
+    "duration_minutes": 15.4
+  },
+  {
+    "call_id": 13,
+    "company": "Pioneer Tech",
+    "vertical": "Retail",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Wei Rodriguez (Solution Architect)",
+      "Michelle Harris (Solution Engineer)",
+      "Robert Chen (Customer Success Manager)"
+    ],
+    "duration_seconds": 655,
+    "duration_minutes": 10.9
+  },
+  {
+    "call_id": 14,
+    "company": "Innovate Solutions",
+    "vertical": "Manufacturing",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Carlos Okonkwo (Solution Architect)",
+      "Jessica Garcia (Product Manager)",
+      "David Williams (Customer Success Manager)",
+      "Chris Moore (Data Engineer)"
+    ],
+    "duration_seconds": 584,
+    "duration_minutes": 9.7
+  },
+  {
+    "call_id": 15,
+    "company": "NextGen Systems",
+    "vertical": "Technology",
+    "call_type": "architecture_review",
+    "participants": [
+      "Matthew Martinez (Customer Success Manager)",
+      "Emily White (Solution Architect)",
+      "Michael Johnson (Technical Lead)"
+    ],
+    "duration_seconds": 798,
+    "duration_minutes": 13.3
+  },
+  {
+    "call_id": 16,
+    "company": "Pinnacle Retail",
+    "vertical": "Healthcare",
+    "call_type": "mixed",
+    "participants": [
+      "Emily Martinez (Solution Engineer)",
+      "Chris Chen (Solution Architect)",
+      "Matthew Davis (Data Engineer)",
+      "Jennifer Rodriguez (Technical Lead)",
+      "Rachel Lee (Customer Success Manager)"
+    ],
+    "duration_seconds": 869,
+    "duration_minutes": 14.5
+  },
+  {
+    "call_id": 17,
+    "company": "Acme Corp",
+    "vertical": "Financial Services",
+    "call_type": "problem_discovery",
+    "participants": [
+      "Amanda Taylor (Solution Architect)",
+      "Carlos Thompson (Solution Engineer)",
+      "Wei Johnson (Product Manager)"
+    ],
+    "duration_seconds": 590,
+    "duration_minutes": 9.8
+  },
+  {
+    "call_id": 18,
+    "company": "Cobalt Technologies",
+    "vertical": "Retail",
+    "call_type": "requirements_gathering",
+    "participants": [
+      "Amanda White (Product Manager)",
+      "David Clark (Technical Lead)",
+      "Amanda Patel (Customer Success Manager)",
+      "Daniel White (Solution Architect)",
+      "Sarah Davis (Solution Engineer)"
+    ],
+    "duration_seconds": 632,
+    "duration_minutes": 10.5
+  },
+  {
+    "call_id": 19,
+    "company": "Vertex Group",
+    "vertical": "Manufacturing",
+    "call_type": "architecture_review",
+    "participants": [
+      "Rachel Lee (Technical Lead)",
+      "Kevin Miller (Customer Success Manager)",
+      "Chris Clark (Product Manager)",
+      "David Chen (Solution Architect)",
+      "Robert Rodriguez (Solution Engineer)"
+    ],
+    "duration_seconds": 733,
+    "duration_minutes": 12.2
+  },
+  {
+    "call_id": 20,
+    "company": "Meridian Health Systems",
+    "vertical": "Technology",
+    "call_type": "mixed",
+    "participants": [
+      "Priya Johnson (Solution Engineer)",
+      "Kevin Clark (Data Engineer)",
+      "Emily Williams (Technical Lead)",
+      "Rachel Thompson (Customer Success Manager)",
+      "Robert Davis (Solution Architect)"
+    ],
+    "duration_seconds": 930,
+    "duration_minutes": 15.5
+  }
+]
